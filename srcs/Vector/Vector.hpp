@@ -236,7 +236,7 @@ namespace ft
 			_vec[pos] = val;
 			return (begin() + pos);
 		};
-    	void		insert(iterator position, size_type n, const value_type &val) {
+		void		insert(iterator position, size_type n, const value_type &val) {
 			difference_type pos = position - begin();
 
 			if (_cap <= _size + n)
