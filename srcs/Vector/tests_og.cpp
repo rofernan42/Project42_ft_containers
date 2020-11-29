@@ -127,14 +127,19 @@ int main(void)
 	print_content(vec3);
 	print_access(vec3);
 
-	std::cout << "********** TEST RESIZE VEC3 **********\n";
+	std::cout << "********** TEST RESIZE n < cap VEC3 **********\n";
 	vec3.resize(9);
 	print_cap(vec3);
 	print_content(vec3);
 	print_access(vec3);
 
+	std::cout << "********** TEST RESIZE n > cap VEC3 **********\n";
+	vec3.resize(17, 1111);
+	print_cap(vec3);
+	print_content(vec3);
+	print_access(vec3);
 
-	std::vector<int>	vec4(vec.begin() + 1, vec.begin() + 3);
+	std::vector<int>	vec4(vec.begin() + 1, vec.begin() + 5);
 	std::cout << "********** VEC4 **********\n";
 	print_cap(vec4);
 	print_content(vec4);
@@ -144,7 +149,9 @@ int main(void)
 	vec.assign(7, 100);
 	print_cap(vec);
 	print_content(vec);
+	print_content_iterator(vec);
 	print_access(vec);
+
 	vec.clear();
 	// std::cout << vec[0] << std::endl;
 	// std::cout << vec[1] << std::endl;

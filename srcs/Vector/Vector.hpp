@@ -15,7 +15,7 @@
 
 # include <limits>
 # include <memory>
-# include "RandomAccessIterator.hpp"
+# include "../Iterator/RandomAccessIterator.hpp"
 
 namespace ft
 {
@@ -212,12 +212,7 @@ namespace ft
 				push_back(val);
 		};
 		void		push_back(const value_type &val) {
-			if (_vec == nullptr)
-			{
-				_vec =_alloc.allocate(1);
-				_cap = 1;
-			}
-			if (_cap <= _size + 1)
+			if (_vec == nullptr || _cap <= _size + 1)
 				reserve(_size + 1);
 			_vec[_size] = val;
 			_size++;
