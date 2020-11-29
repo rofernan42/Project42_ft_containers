@@ -15,7 +15,7 @@
 
 # include <limits>
 # include <memory>
-# include "Iterator.hpp"
+# include "RandomAccessIterator.hpp"
 
 namespace ft
 {
@@ -31,8 +31,8 @@ namespace ft
 		typedef const value_type *const_pointer;
 		typedef RandomAccessIterator<T> iterator;
 		typedef RandomAccessIterator<const T> const_iterator;
-		typedef ReverseIterator<T> reverse_iterator;
-		typedef ReverseIterator<const T> const_reverse_iterator;
+		typedef ReverseRandomAccess<T> reverse_iterator;
+		typedef ReverseRandomAccess<const T> const_reverse_iterator;
 		typedef ptrdiff_t difference_type;
 		typedef size_t size_type;
 

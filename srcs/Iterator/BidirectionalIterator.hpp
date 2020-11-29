@@ -10,38 +10,37 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RANDOMACCESSITERATOR_HPP
-# define RANDOMACCESSITERATOR_HPP
+#ifndef BIDIRECTIONALITERATOR_HPP
+# define BIDIRECTIONALITERATOR_HPP
 
 # include <cstddef>
 
 namespace ft
 {
-	struct random_access_iterator_tag {};
+	struct bidirectional_iterator_tag {};
 
 	template <class T>
-	class RandomAccessIterator
+	class BidirectionalIterator
 	{
 		public:
-		typedef RandomAccessIterator iterator;
+		typedef BidirectionalIterator iterator;
 		typedef T value_type;
 		typedef ptrdiff_t difference_type;
 		typedef T* pointer;
 		typedef T& reference;
-		typedef random_access_iterator_tag iterator_category;
+		typedef bidirectional_iterator_tag iterator_category;
 		typedef size_t size_type;
 
-		RandomAccessIterator() {
+		BidirectionalIterator() {
 			_ptr = nullptr;
 		};
-		RandomAccessIterator(pointer ptr) {
+		BidirectionalIterator(pointer ptr) {
 			_ptr = ptr;
 		};
-		RandomAccessIterator(const iterator &x) {
+		BidirectionalIterator(const iterator &x) {
 			_ptr = x._ptr;
 		};
-		~RandomAccessIterator() {};
-
+		~BidirectionalIterator() {};
 		iterator	&operator=(const iterator &x) {
 			_ptr = x._ptr;
 			return (*this);
@@ -80,63 +79,19 @@ namespace ft
 			return (temp);
 		};
 
-		iterator		operator+(difference_type n) {
-			iterator temp(*this);
-			temp._ptr += n;
-			return (temp);
-		};
-		difference_type	operator+(iterator x) {
-			return (_ptr + x._ptr);
-		}
-		iterator		operator-(difference_type n) {
-			iterator temp(*this);
-			temp._ptr -= n;
-			return (temp);
-		};
-		difference_type	operator-(iterator x) {
-			return (_ptr - x._ptr);
-		}
-
-		bool	operator<(const iterator &x) const {
-			return (_ptr < x._ptr);
-		};
-		bool	operator>(const iterator &x) const {
-			return (_ptr > x._ptr);
-		};
-		bool	operator<=(const iterator &x) const {
-			return (_ptr <= x._ptr);
-		};
-		bool	operator>=(const iterator &x) const {
-			return (_ptr >= x._ptr);
-		};
-
-		iterator	&operator+=(difference_type n) {
-			_ptr += n;
-			return (*this);
-		}
-		iterator	&operator-=(difference_type n) {
-			_ptr -= n;
-			return (*this);
-		};
-
-		reference	operator[](size_type n) const {
-			return (*(_ptr + n));
-		};
-
 		private:
 		pointer _ptr;
 	};
 
 	template <class T>
-	class ReverseIterator
+	class ReverseBidirectional
 	{
 		public:
-		typedef ReverseIterator iterator;
+		typedef ReverseBidirectional iterator;
 		typedef T value_type;
 		typedef ptrdiff_t difference_type;
 		typedef T* pointer;
 		typedef T& reference;
-		typedef random_access_iterator_tag iterator_category;
 		typedef size_t size_type;
 
 		ReverseIterator() {
