@@ -226,7 +226,7 @@ namespace ft
 			if (_cap <= _size + 1)
 				reserve(_size + 1);
 			_size++;
-			for (size_t i = _size - 1; i > pos; i--)
+			for (size_t i = _size - 1; i > (size_t)pos; i--)
 				_vec[i] = _vec[i - 1];
 			_vec[pos] = val;
 			return (begin() + pos);
@@ -249,7 +249,7 @@ namespace ft
 			if (_cap <= _size + range)
 				reserve(_size + range);
 			_size = _size + range;
-			for (size_t i = _size - 1; i > pos + range - 1; i--)
+			for (size_t i = _size - 1; i > (size_t)pos + (size_t)range - 1; i--)
 				_vec[i] = _vec[i - range];
 			iterator it = begin();
 			while (first != last)

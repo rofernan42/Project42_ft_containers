@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tests_vector.cpp                                   :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rofernan <rofernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/27 17:10:05 by rofernan          #+#    #+#             */
-/*   Updated: 2020/11/27 17:10:07 by rofernan         ###   ########.fr       */
+/*   Created: 2020/11/13 12:02:24 by rofernan          #+#    #+#             */
+/*   Updated: 2020/11/13 12:02:39 by rofernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
-#include "Vector.hpp"
+#include <vector>
 
 template <class T>
-void	print_cap(ft::vector<T> vec)
+void	print_cap(std::vector<T> vec)
 {
 	std::cout << "vec.size():\t" << vec.size() << std::endl;
 	std::cout << "vec.max_size():\t" << vec.max_size() << std::endl;
@@ -24,7 +24,7 @@ void	print_cap(ft::vector<T> vec)
 }
 
 template <class T>
-void	print_content(ft::vector<T> vec)
+void	print_content(std::vector<T> vec)
 {
 	std::cout << "print content with operator[]:\n";
 	for (size_t i = 0; i < vec.size(); i++)
@@ -33,7 +33,7 @@ void	print_content(ft::vector<T> vec)
 }
 
 template <class T>
-void	print_content_at(ft::vector<T> vec)
+void	print_content_at(std::vector<T> vec)
 {
 	std::cout << "print content with vec.at():\n";
 	for (size_t i = 0; i < vec.size(); i++)
@@ -42,25 +42,25 @@ void	print_content_at(ft::vector<T> vec)
 }
 
 template <class T>
-void	print_content_iterator(ft::vector<T> vec)
+void	print_content_iterator(std::vector<T> vec)
 {
 	std::cout << "print content with iterarors:\n";
-	for (typename ft::vector<T>::iterator it = vec.begin(); it != vec.end(); it++)
+	for (typename std::vector<T>::iterator it = vec.begin(); it != vec.end(); it++)
 		std::cout << "*it:\t" << *it << std::endl;
 	std::cout <<std::endl;
 }
 
 template <class T>
-void	print_reverse_iterator(ft::vector<T> vec)
+void	print_reverse_iterator(std::vector<T> vec)
 {
 	std::cout << "print content with reverse iterarors:\n";
-	for (typename ft::vector<T>::reverse_iterator it = vec.rbegin(); it != vec.rend(); it++)
+	for (typename std::vector<T>::reverse_iterator it = vec.rbegin(); it != vec.rend(); it++)
 		std::cout << "*it:\t" << *it << std::endl;
 	std::cout <<std::endl;
 }
 
 template <class T>
-void	print_access(ft::vector<T> vec)
+void	print_access(std::vector<T> vec)
 {
 	std::cout << "vec.front():\t" << vec.front() << std::endl;
 	std::cout << "vec.back():\t" << vec.back() << std::endl;
@@ -69,17 +69,17 @@ void	print_access(ft::vector<T> vec)
 
 int main(void)
 {
-	std::cout << "################# TESTS MY VECTOR #################" << std::endl;
-	ft::vector<int>	vec;
-	ft::vector<int>	vec2;
+	std::cout << "################# TESTS ORIGINAL VECTOR #################" << std::endl;
+	std::vector<int>	vec;
+	std::vector<int>	vec2;
 
-	std::cout << "********** VEC **********\n";
+	std::cout << "*** VEC ***\n";
 	print_cap(vec);
 
-	std::cout << "********** VEC2 **********\n";
+	std::cout << "*** VEC2 ***\n";
 	print_cap(vec2);
 
-	std::cout << "********** VEC - push_back values **********\n";
+	std::cout << "*** VEC - push_back values ***\n";
 	vec.push_back(5);
 	vec.push_back(2);
 	vec.push_back(4);
@@ -115,7 +115,7 @@ int main(void)
 	print_content(vec);
 	print_access(vec);
 
-	ft::vector<int>	vec3(4, 42);
+	std::vector<int>	vec3(4, 42);
 	std::cout << "********** VEC3 **********\n";
 	print_cap(vec3);
 	print_content(vec3);
@@ -140,7 +140,7 @@ int main(void)
 	print_content(vec3);
 	print_access(vec3);
 
-	ft::vector<int>	vec4(vec.begin() + 1, vec.begin() + 5);
+	std::vector<int>	vec4(vec.begin() + 1, vec.begin() + 5);
 	std::cout << "********** VEC4 **********\n";
 	print_cap(vec4);
 	print_content(vec4);
