@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Iterator.hpp                                       :+:      :+:    :+:   */
+/*   BidirectionalIterator.hpp                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rofernan <rofernan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/27 17:10:29 by rofernan          #+#    #+#             */
-/*   Updated: 2020/11/27 17:10:33 by rofernan         ###   ########.fr       */
+/*   Updated: 2020/11/29 14:19:03 by rofernan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@
 namespace ft
 {
 	struct bidirectional_iterator_tag {};
+
+	template <class T>
+	struct Elem
+	{
+		Elem	*prev;
+		T		data;
+		Elem	*next;
+	};
 
 	template <class T>
 	class BidirectionalIterator
@@ -34,7 +42,7 @@ namespace ft
 		BidirectionalIterator() {
 			_ptr = nullptr;
 		};
-		BidirectionalIterator(pointer ptr) {
+		BidirectionalIterator(Elem<value_type> *ptr) {
 			_ptr = ptr;
 		};
 		BidirectionalIterator(const iterator &x) {
@@ -47,40 +55,44 @@ namespace ft
 		};
 
 		bool	operator==(const iterator &x) const {
-			return (_ptr == x._ptr);
+			return (_ptr->data == x._ptr->data \
+			&& _ptr->prev == x._ptr->prev \
+			&& _ptr->next == x._ptr->next);
 		};
 		bool	operator!=(const iterator &x) const {
-			return (_ptr != x._ptr);
+			return (!(_ptr->data == x._ptr->data \
+			&& _ptr->prev == x._ptr->prev \
+			&& _ptr->next == x._ptr->next));
 		};
 
 		reference	operator*() const {
-			return (*_ptr);
+			return (_ptr->data);
 		};
 		pointer		operator->() const {
 			return (&(operator*()));
 		};
 
 		iterator	&operator++() {
-			_ptr++;
+			_ptr = _ptr->next;
 			return (*this);
 		};
 		iterator	operator++(int) {
 			iterator temp(*this);
-			_ptr++;
+			_ptr = _ptr->next;
 			return (temp);
 		};
 		iterator	&operator--() {
-			_ptr--;
+			_ptr = _ptr->prev;
 			return (*this);
 		};
 		iterator	operator--(int) {
 			iterator temp(*this);
-			_ptr--;
+			_ptr = _ptr->prev;
 			return (temp);
 		};
 
 		private:
-		pointer _ptr;
+		Elem<value_type>	*_ptr;
 	};
 
 	template <class T>
@@ -94,16 +106,16 @@ namespace ft
 		typedef T& reference;
 		typedef size_t size_type;
 
-		ReverseIterator() {
+		ReverseBidirectional() {
 			_ptr = nullptr;
 		};
-		ReverseIterator(pointer ptr) {
+		ReverseBidirectional(pointer ptr) {
 			_ptr = ptr;
 		};
-		ReverseIterator(const iterator &x) {
+		ReverseBidirectional(const iterator &x) {
 			_ptr = x._ptr;
 		};
-		~ReverseIterator() {};
+		~ReverseBidirectional() {};
 
 		iterator	&operator=(const iterator &x) {
 			_ptr = x._ptr;
@@ -111,83 +123,44 @@ namespace ft
 		};
 
 		bool	operator==(const iterator &x) const {
-			return (_ptr == x._ptr);
+			return (_ptr->data == x._ptr->data \
+			&& _ptr->prev == x._ptr->prev \
+			&& _ptr->next == x._ptr->next);
 		};
 		bool	operator!=(const iterator &x) const {
-			return (_ptr != x._ptr);
+			return (!(_ptr->data == x._ptr->data \
+			&& _ptr->prev == x._ptr->prev \
+			&& _ptr->next == x._ptr->next));
 		};
 
 		reference	operator*() const {
-			return (*_ptr);
+			return (_ptr->content);
 		};
 		pointer		operator->() const {
 			return (&(operator*()));
 		};
 
 		iterator	&operator++() {
-			_ptr--;
+			_ptr = _ptr->prev;
 			return (*this);
 		};
 		iterator	operator++(int) {
 			iterator temp(*this);
-			_ptr--;
+			_ptr = _ptr->prev;
 			return (temp);
 		};
 		iterator	&operator--() {
-			_ptr++;
+			_ptr = _ptr->next;
 			return (*this);
 		};
 		iterator	operator--(int) {
 			iterator temp(*this);
-			_ptr++;
+			_ptr = _ptr->next;
 			return (temp);
-		};
-
-		iterator		operator+(difference_type x) {
-			iterator temp(*this);
-			temp._ptr -= x;
-			return (temp);
-		};
-		difference_type	operator+(iterator x) {
-			return (_ptr - x._ptr);
-		}
-		iterator		operator-(difference_type x) {
-			iterator temp(*this);
-			temp._ptr += x;
-			return (temp);
-		};
-		difference_type	operator-(iterator x) {
-			return (_ptr + x._ptr);
-		}
-
-		bool	operator<(const iterator &x) const {
-			return (_ptr < x._ptr);
-		};
-		bool	operator>(const iterator &x) const {
-			return (_ptr > x._ptr);
-		};
-		bool	operator<=(const iterator &x) const {
-			return (_ptr <= x._ptr);
-		};
-		bool	operator>=(const iterator &x) const {
-			return (_ptr >= x._ptr);
-		};
-
-		iterator	&operator+=(difference_type x) {
-			_ptr -= x;
-			return (*this);
-		}
-		iterator	&operator-=(difference_type x) {
-			_ptr += x;
-			return (*this);
-		};
-
-		reference	operator[](size_type n) const {
-			return (*(_ptr + n));
 		};
 
 		private:
-		pointer _ptr;
+		Elem<value_type>	*_ptr;
 	};
 };
 
