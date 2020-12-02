@@ -96,7 +96,7 @@ namespace ft
 			return (reverse_iterator(_vec + _size - 1));
 		};
 		const_reverse_iterator	rbegin() const {
-			return (reverse_iterator(_vec + _size - 1));
+			return (const_reverse_iterator(_vec + _size - 1));
 		};
 		reverse_iterator		rend() {
 			return (reverse_iterator(_vec - 1));
