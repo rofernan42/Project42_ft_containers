@@ -29,7 +29,7 @@ void	print_content(std::vector<T> vec)
 	std::cout << "print content with operator[]:\n";
 	for (size_t i = 0; i < vec.size(); i++)
 		std::cout << "vec[" << i << "]: " << vec[i] << std::endl;
-	std::cout <<std::endl;
+	std::cout << std::endl;
 }
 
 template <class T>
@@ -38,7 +38,7 @@ void	print_content_at(std::vector<T> vec)
 	std::cout << "print content with vec.at():\n";
 	for (size_t i = 0; i < vec.size(); i++)
 		std::cout << "vec.at(" << i << "): " << vec.at(i) << std::endl;
-	std::cout <<std::endl;
+	std::cout << std::endl;
 }
 
 template <class T>
@@ -47,7 +47,7 @@ void	print_content_iterator(std::vector<T> vec)
 	std::cout << "print content with iterarors:\n";
 	for (typename std::vector<T>::iterator it = vec.begin(); it != vec.end(); it++)
 		std::cout << "*it:\t" << *it << std::endl;
-	std::cout <<std::endl;
+	std::cout << std::endl;
 }
 
 template <class T>
@@ -56,7 +56,7 @@ void	print_reverse_iterator(std::vector<T> vec)
 	std::cout << "print content with reverse iterarors:\n";
 	for (typename std::vector<T>::reverse_iterator it = vec.rbegin(); it != vec.rend(); it++)
 		std::cout << "*it:\t" << *it << std::endl;
-	std::cout <<std::endl;
+	std::cout << std::endl;
 }
 
 template <class T>
@@ -64,7 +64,7 @@ void	print_access(std::vector<T> vec)
 {
 	std::cout << "vec.front():\t" << vec.front() << std::endl;
 	std::cout << "vec.back():\t" << vec.back() << std::endl;
-	std::cout <<std::endl;
+	std::cout << std::endl;
 }
 
 int main(void)

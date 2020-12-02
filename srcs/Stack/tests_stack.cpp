@@ -30,14 +30,14 @@ void	print_content(ft::stack<T> stk)
         std::cout << "stk.top(): " << stk.top() << std::endl;
         stk.pop();
     }
-	std::cout <<std::endl;
+	std::cout << std::endl;
 }
 
 template <class T>
 void	print_access(ft::stack<T> stk)
 {
 	std::cout << "stk.top():\t" << stk.top() << std::endl;
-	std::cout <<std::endl;
+	std::cout << std::endl;
 }
 
 int main(void)

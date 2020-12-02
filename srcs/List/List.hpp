@@ -48,8 +48,9 @@ namespace ft
 			_init_list();
 			assign(first, last);
 		};
-		list(const list &x) {
+		list(list &x) {
 			_init_list();
+			// *this = x;
 			assign(x.begin(), x.end());
 		};
 		~list() {};
@@ -79,7 +80,7 @@ namespace ft
 			return (reverse_iterator(_end));
 		};
 		const_reverse_iterator	rbegin() const {
-			return (reverse_iterator(_end));
+			return (const_reverse_iterator(_end));
 		};
 		reverse_iterator		rend() {
 			return (reverse_iterator(_head));
