@@ -17,11 +17,14 @@ OBJS		=	$(SRCS:.cpp=.o)
 OBJS_CMP	=	$(SRCS_CMP:.cpp=.o)
 CXX			=	clang++
 CFLAGS		=	-Wall -Wextra -Werror -I./
+DEBUG		=	-Wall -Wextra -Werror -I./ -g -fsanitize=address
 all:		$(NAME)
 $(NAME):	$(OBJS)
 			$(CXX) $(CFLAGS) -o $(NAME) $(OBJS)
 cmp:		$(OBJS_CMP)
 			$(CXX) $(CFLAGS) -o $(NAME) $(OBJS_CMP)
+debug:		$(OBJS)
+			$(CXX) $(DEBUG) -o $(NAME) $(OBJS)
 clean:
 			rm -rf $(OBJS) $(OBJS_CMP)
 fclean:		clean

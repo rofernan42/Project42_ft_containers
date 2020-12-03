@@ -59,21 +59,22 @@ namespace ft
 		};
 		vector(const vector &x) {
 			_vec = nullptr;
-			_vec = _alloc.allocate(x._cap);
 			_size = 0;
-			_cap = x._cap;
+			_cap = 0;
+			reserve(x._cap);
 			assign(x.begin(), x.end());
 		};
 		~vector() {
-			_alloc.deallocate(_vec, _cap);
+			if (!empty())
+				clear();
 		};
 		vector	&operator=(const vector &x) {
 			if (this != &x)
 			{
 				_alloc.deallocate(_vec, _cap);
-				_vec = _alloc.allocate(x._cap);
 				_size = 0;
-				_cap = x._cap;
+				_cap = 0;
+				reserve(x._cap);
 				assign(x.begin(), x.end());
 			}
 			return (*this);
@@ -148,7 +149,8 @@ namespace ft
 				tmp = _alloc.allocate(n);
 				for (size_t i = 0; i < _size; i++)
 					tmp[i] = _vec[i];
-				_alloc.deallocate(_vec, _cap);
+				if (!empty())
+					_alloc.deallocate(_vec, _cap);
 				_cap = n;
 				_vec = tmp;
 			}

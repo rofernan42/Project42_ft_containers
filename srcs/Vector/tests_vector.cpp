@@ -154,6 +154,24 @@ int main(void)
 	print_access(vec);
 
 	vec.clear();
+
+	std::cout << "********** VEC5 = VEC4 **********\n";
+	ft::vector<int>	vec5;
+	vec5 = vec4;
+	print_cap(vec5);
+	print_content(vec5);
+	print_content_iterator(vec5);
+	print_access(vec5);
+
+	std::cout << "********** VEC5 = VEC3 **********\n";
+	vec5 = vec3;
+	print_content(vec5);
+
+	std::cout << "********** VEC5 = VEC **********\n";
+	vec5 = vec;
+	print_cap(vec5);
+	print_content(vec5);
+	print_content_iterator(vec5);
 	// std::cout << vec[0] << std::endl;
 	// std::cout << vec[1] << std::endl;
 	// std::cout << vec[2] << std::endl;
