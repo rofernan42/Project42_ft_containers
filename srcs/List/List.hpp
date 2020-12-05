@@ -203,9 +203,33 @@ namespace ft
 			delete tmp;
 			_size--;
 		};
-		iterator	insert(iterator position, const value_type &val);
-		void		insert(iterator position, size_type n, const value_type &val);
-		void		insert(iterator position, iterator first, iterator last);
+		iterator	insert(iterator position, const value_type &val) {
+			Elem<value_type>	*tmp = new Elem<value_type>;
+			iterator			it = begin();
+			_new = _start;
+			while (it != position)
+			{
+				it++;
+				_new = _new->next;
+			}
+			tmp->data = val;
+			tmp->prev = _new->prev;
+			tmp->next = _new;
+			_new->prev->next = tmp;
+			_new->prev = tmp;
+			return (--it);
+		};
+		void		insert(iterator position, size_type n, const value_type &val) {
+			for (size_t i = 0; i < n; i++)
+				insert(position, val);
+		};
+		void		insert(iterator position, iterator first, iterator last) {
+			while (first != last)
+			{
+				insert(position, *first);
+				first++;
+			}
+		};
 		iterator	erase(iterator position) {
 			if (position == begin())
 			{

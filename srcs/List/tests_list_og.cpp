@@ -59,15 +59,18 @@ int main(void)
 	
 	std::cout << "return value of erase: " << *lst.erase(it) << std::endl;
 
+	print_cap(lst);
 	print_content(lst);
 
 	it = lst.end();
 	std::cout << "return value of erase end: " << *lst.erase(--it) << std::endl;
 
+	print_cap(lst);
 	print_content(lst);
 
 	std::cout << "return value of erase begin: " << *lst.erase(lst.begin()) << std::endl;
 
+	print_cap(lst);
 	print_content(lst);
 
 	lst.push_front(42);
@@ -78,6 +81,7 @@ int main(void)
 
 	std::cout << "push front and push back values: " << std::endl;
 
+	print_cap(lst);
 	print_content(lst);
 
 	std::cout << "erase begin+2 to begin+5: " << std::endl;
@@ -88,22 +92,83 @@ int main(void)
 	for (int i = 0; i < 5; i++)
 		it2++;
 	std::cout << "return value of erase range: " << *lst.erase(it, it2) << std::endl;
+	print_cap(lst);
 	print_content(lst);
 
-	std::cout << "try erase end(): " << *lst.erase(lst.end()) << std::endl;
-	print_content(lst);
+	std::list<int> lst2(lst);
+	std::cout << "print lst2: " << std::endl;
+	lst2.push_front(1010101);
+	lst2.push_back(949494902);
+	print_cap(lst2);
+	print_content(lst2);
 
-	std::list<std::string> lst2;
-	lst2.push_front("hello");
-	lst2.push_back("world");
+	std::list<int> lst3;
+	lst3 = lst2;
+	std::cout << "print lst3: " << std::endl;
+	print_cap(lst3);
+	print_content(lst3);
 
+	std::cout << "swap lst lst2: " << std::endl;
+	std::cout << "print lst: " << std::endl;
 	lst.swap(lst2);
+	print_cap(lst);
 	print_content(lst);
 
-	lst.clear();
-	lst.clear();
+	std::cout << "print lst2: " << std::endl;
+	print_cap(lst2);
+	print_content(lst2);
 
-	print_content(lst);
+	std::cout << "print lst4(lst.begin(), lst.end()): " << std::endl;
+	std::list<int> lst4(lst.begin(), lst.end());
+	print_cap(lst4);
+	print_content(lst4);
+
+	std::cout << "lst4.resize(9, 654321): " << std::endl;
+	lst4.resize(9, 654321);
+	print_cap(lst4);
+	print_content(lst4);
+
+	std::cout << "lst4.resize(4): " << std::endl;
+	lst4.resize(4);
+	print_cap(lst4);
+	print_content(lst4);
+
+	std::cout << "insert value at position 4: " << std::endl;
+	it = lst4.begin();
+	for (int i = 0; i < 4; i++)
+		it++;
+	std::cout << "return value of insert: " << *lst4.insert(it, 999) << std::endl;
+	print_cap(lst4);
+	print_content(lst4);
+
+	std::cout << "insert value at position 2: " << std::endl;
+	it = lst4.begin();
+	for (int i = 0; i < 2; i++)
+		it++;
+	std::cout << "return value of insert: " << *lst4.insert(it, 777) << std::endl;
+	print_cap(lst4);
+	print_content(lst4);
+
+	lst2.push_back(543);
+	lst2.push_back(78979);
+	lst2.push_back(12344);
+	print_content(lst2);
+
+	std::cout << "insert values at position 4: " << std::endl;
+	it = lst4.begin();
+	for (int i = 0; i < 4; i++)
+		it++;
+	lst4.insert(it, 5, 80);
+	print_cap(lst4);
+	print_content(lst4);
+
+	std::cout << "insert lst2 at position 5: " << std::endl;
+	it = lst4.begin();
+	for (int i = 0; i < 5; i++)
+		it++;
+	lst4.insert(it, lst2.begin(), lst2.end());
+	print_cap(lst4);
+	print_content(lst4);
 
 	return (0);
 }
