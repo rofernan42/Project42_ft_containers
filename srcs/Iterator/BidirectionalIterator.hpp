@@ -73,21 +73,23 @@ namespace ft
 		};
 
 		iterator	&operator++() {
-			_ptr = _ptr->next;
+			if (_ptr && _ptr->next)
+				_ptr = _ptr->next;
 			return (*this);
 		};
 		iterator	operator++(int) {
 			iterator temp(*this);
-			_ptr = _ptr->next;
+			operator++();
 			return (temp);
 		};
 		iterator	&operator--() {
-			_ptr = _ptr->prev;
+			if (_ptr && _ptr->prev)
+				_ptr = _ptr->prev;
 			return (*this);
 		};
 		iterator	operator--(int) {
 			iterator temp(*this);
-			_ptr = _ptr->prev;
+			operator--();
 			return (temp);
 		};
 
@@ -134,28 +136,30 @@ namespace ft
 		};
 
 		reference	operator*() const {
-			return (_ptr->content);
+			return (_ptr->data);
 		};
 		pointer		operator->() const {
 			return (&(operator*()));
 		};
 
 		iterator	&operator++() {
-			_ptr = _ptr->prev;
+			if (_ptr && _ptr->prev)
+				_ptr = _ptr->prev;
 			return (*this);
 		};
 		iterator	operator++(int) {
 			iterator temp(*this);
-			_ptr = _ptr->prev;
+			operator++();
 			return (temp);
 		};
 		iterator	&operator--() {
-			_ptr = _ptr->next;
+			if (_ptr && _ptr->next)
+				_ptr = _ptr->next;
 			return (*this);
 		};
 		iterator	operator--(int) {
 			iterator temp(*this);
-			_ptr = _ptr->next;
+			operator--();
 			return (temp);
 		};
 

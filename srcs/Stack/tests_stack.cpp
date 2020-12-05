@@ -36,13 +36,13 @@ void	print_content(ft::stack<T> stk)
 template <class T>
 void	print_access(ft::stack<T> stk)
 {
-	std::cout << "stk.top():\t" << stk.top() << std::endl;
+	std::cout << "stk.top(): " << stk.top() << std::endl;
 	std::cout << std::endl;
 }
 
 int main(void)
 {
-	std::cout << "################# TESTS MY VECTOR #################" << std::endl;
+	std::cout << "################# TESTS MY STACK #################" << std::endl;
 
 	ft::stack<int>	stk;
 	ft::stack<int>	stk2;
@@ -55,16 +55,28 @@ int main(void)
 	stk.push(10);
 	stk.push(7);
 
+	std::cout << "********** STK **********\n";
 	print_cap(stk);
 	print_content(stk);
+	print_access(stk);
 
 	stk2 = stk;
 
+	std::cout << "********** STK2 = STK **********\n";
 	print_content(stk2);
+	print_access(stk);
 
+	std::cout << "********** STK.POP() **********\n";
 	stk.pop();
 	print_cap(stk);
 	print_content(stk);
+	print_access(stk);
+
+	std::cout << "********** STK3(STK) **********\n";
+	ft::stack<int>	stk3(stk);
+	print_cap(stk3);
+	print_content(stk3);
+	print_access(stk3);
 
 	return (0);
 }

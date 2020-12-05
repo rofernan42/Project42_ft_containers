@@ -29,7 +29,9 @@ namespace ft
 		stack(const container_type &ctnr = container_type()) {
 			_ctnr = ctnr;
 		};
-		~stack() {};
+		~stack() {
+			_ctnr.clear();
+		};
 
 		bool	empty() const {
 			if (_ctnr.size() == 0)

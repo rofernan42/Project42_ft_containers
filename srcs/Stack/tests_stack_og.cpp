@@ -42,7 +42,7 @@ void	print_access(std::stack<T> stk)
 
 int main(void)
 {
-	std::cout << "################# TESTS ORIGINAL VECTOR #################" << std::endl;
+	std::cout << "################# TESTS ORIGINAL STACK #################" << std::endl;
 
 	std::stack<int>	stk;
 	std::stack<int>	stk2;
@@ -53,16 +53,28 @@ int main(void)
 	stk.push(10);
 	stk.push(7);
 
+	std::cout << "********** STK **********\n";
 	print_cap(stk);
 	print_content(stk);
+	print_access(stk);
 
 	stk2 = stk;
 
+	std::cout << "********** STK2 = STK **********\n";
 	print_content(stk2);
+	print_access(stk);
 
+	std::cout << "********** STK.POP() **********\n";
 	stk.pop();
 	print_cap(stk);
 	print_content(stk);
+	print_access(stk);
+
+	std::cout << "********** STK3(STK) **********\n";
+	std::stack<int>	stk3(stk);
+	print_cap(stk3);
+	print_content(stk3);
+	print_access(stk3);
 
 	return (0);
 }

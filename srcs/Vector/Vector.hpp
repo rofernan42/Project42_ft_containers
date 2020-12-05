@@ -72,6 +72,7 @@ namespace ft
 			if (this != &x)
 			{
 				_alloc.deallocate(_vec, _cap);
+				_vec = nullptr;
 				_size = 0;
 				_cap = 0;
 				reserve(x._cap);
@@ -265,6 +266,7 @@ namespace ft
 			for (iterator it = position; it != end() - 1; it++)
 				*it = *(it + 1);
 			_size--;
+			_cap = _size;
 			return (position);
 		};
 		iterator	erase(iterator first, iterator last) {
@@ -273,6 +275,7 @@ namespace ft
 			for (difference_type i = first - begin(); i < end() - first; i++)
 				_vec[i] = _vec[i + range];
 			_size -= range;
+			_cap = _size;
 			return (first);
 		};
 		void		swap(vector &x) {

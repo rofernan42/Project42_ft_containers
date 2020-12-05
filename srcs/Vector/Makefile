@@ -18,6 +18,7 @@ OBJS_CMP	=	$(SRCS_CMP:.cpp=.o)
 CXX			=	clang++
 CFLAGS		=	-Wall -Wextra -Werror -I./
 DEBUG		=	-Wall -Wextra -Werror -I./ -g -fsanitize=address
+
 all:		$(NAME)
 $(NAME):	$(OBJS)
 			$(CXX) $(CFLAGS) -o $(NAME) $(OBJS)

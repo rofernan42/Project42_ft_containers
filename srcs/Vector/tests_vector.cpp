@@ -172,6 +172,46 @@ int main(void)
 	print_cap(vec5);
 	print_content(vec5);
 	print_content_iterator(vec5);
+
+	std::cout << "********** VEC6 **********\n";
+	ft::vector<int> vec6(9, 7777);
+	print_cap(vec6);
+	print_content(vec6);
+	print_content_iterator(vec6);
+	print_access(vec6);
+
+	std::cout << "********** SWAP VEC6 - VEC3 **********\n";
+	vec6.swap(vec3);
+	std::cout << "********** VEC3 **********\n";
+	print_cap(vec3);
+	print_content(vec3);
+	print_access(vec3);
+	std::cout << "********** VEC6 **********\n";
+	print_cap(vec6);
+	print_content(vec6);
+	print_access(vec6);
+
+	std::cout << "********** TEST ERASE 6th to 16th VALUES VEC6 **********\n";
+	std::cout << "return value erase: " << *vec6.erase(vec6.begin() + 6, vec6.begin() + 16) << std::endl;
+	print_cap(vec6);
+	print_content(vec6);
+	print_access(vec6);
+
+	std::cout << "********** TEST ERASE VALUES VEC6 **********\n";
+	std::cout << "return value erase: " << *vec6.erase(vec6.begin() + 6) << std::endl;
+	print_cap(vec6);
+	print_content(vec6);
+	print_access(vec6);
+
+	std::cout << "return value erase: " << *vec6.erase(vec6.begin() + 5) << std::endl;
+	print_cap(vec6);
+	print_content(vec6);
+	print_access(vec6);
+
+	std::cout << "return value erase: " << *vec6.erase(vec6.begin() + 2) << std::endl;
+	print_cap(vec6);
+	print_content(vec6);
+	print_access(vec6);
 	// std::cout << vec[0] << std::endl;
 	// std::cout << vec[1] << std::endl;
 	// std::cout << vec[2] << std::endl;

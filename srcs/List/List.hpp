@@ -50,16 +50,16 @@ namespace ft
 		};
 		list(list &x) {
 			_init_list();
-			// *this = x;
 			assign(x.begin(), x.end());
 		};
-		~list() {};
-		list	&operator=(const list &x) {
+		~list() {
+			clear();
+			delete _head;
+			delete _tail;
+		};
+		list	&operator=(list &x) {
 			if (this != &x)
-			{
-				_init_list();
 				assign(x.begin(), x.end());
-			}
 			return (*this);
 		};
 
@@ -99,7 +99,7 @@ namespace ft
 			return (_size);
 		};
 		size_type	max_size() const {
-			return (std::numeric_limits<size_type>::max() / sizeof(value_type));
+			return (std::numeric_limits<size_type>::max() / sizeof(Elem<value_type>));
 		};
 
 		/* Element access */
@@ -141,9 +141,36 @@ namespace ft
 			for (size_t i = 0; i < n; i++)
 				push_back(val);
 		};
-		void		push_front(const value_type &val);
+		void		push_front(const value_type &val) {
+			if (empty())
+			{
+				_new = new Elem<value_type>;
+				_new->data = val;
+				_new->next = _end;
+				_start = _new;
+				_end = _new;
+				_tail->prev = _end;
+			}
+			else
+			{
+				_new = new Elem<value_type>;
+				_new->data = val;
+				_new->next = _start;
+				_start->prev = _new;
+				_start = _new;
+			}
+			_start->prev = _head;
+			_head->next = _start;
+			_size++;
+		};
 		void		pop_front() {
-			erase(begin());
+			Elem<value_type>	*tmp;
+			tmp = _start;
+			_start->next->prev = _head;
+			_head->next = _start->next;
+			_start = _start->next;
+			delete tmp;
+			_size--;
 		};
 		void		push_back(const value_type &val) {
 			if (empty())
@@ -168,17 +195,71 @@ namespace ft
 			_size++;
 		};
 		void		pop_back() {
-			erase(end());
+			Elem<value_type>	*tmp;
+			tmp = _end;
+			_end->prev->next = _tail;
+			_tail->prev = _end->prev;
+			_end = _end->prev;
+			delete tmp;
+			_size--;
 		};
 		iterator	insert(iterator position, const value_type &val);
 		void		insert(iterator position, size_type n, const value_type &val);
 		void		insert(iterator position, iterator first, iterator last);
-		iterator	erase(iterator position);
-		iterator	erase(iterator first, iterator last);
-		void		swap(list &x);
-		void		resize(size_type n, value_type val = value_type());
+		iterator	erase(iterator position) {
+			if (position == begin())
+			{
+				pop_front();
+				return (begin());
+			}
+			else if (position == --end())
+			{
+				pop_back();
+				return (begin());
+			}
+			Elem<value_type>	*tmp;
+			iterator			it = begin();
+			tmp = _start;
+			while (it != position)
+			{
+				it++;
+				tmp = tmp->next;
+				if (it == end())
+					return (--it);
+			}
+			tmp->prev->next = tmp->next;
+			tmp->next->prev = tmp->prev;
+			delete tmp;
+			_size--;
+			return (++it);
+		};
+		iterator	erase(iterator first, iterator last) {
+			while (first != last)
+			{
+				erase(first);
+				first++;
+			}
+			return (first);
+		};
+		void		swap(list &x) {
+			list	tmp(x);
+			x = *this;
+			*this = tmp;
+		};
+		void		resize(size_type n, value_type val = value_type()) {
+			if (n < _size)
+			{
+				iterator it = begin();
+				for (size_t i = 0; i < n; i++)
+					it++;
+				erase(it, end());
+			}
+			else if (n > _size)
+				for (size_t i = _size; i < n; i++)
+					push_back(val);
+		};
 		void		clear() {
-			Elem<value_type> *tmp = new Elem<value_type>;
+			Elem<value_type> *tmp;
 			while (_start != _tail)
 			{
 				tmp = _start;
@@ -222,6 +303,8 @@ namespace ft
 			_tail = new Elem<value_type>;
 			_tail->data = value_type();
 			_tail->next = NULL;
+			_start = _tail;
+			_end = _head;
 			_size = 0;
 		};
 	};
