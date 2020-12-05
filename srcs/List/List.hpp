@@ -144,20 +144,20 @@ namespace ft
 		void		push_front(const value_type &val) {
 			if (empty())
 			{
-				_new = new Elem<value_type>;
-				_new->data = val;
-				_new->next = _end;
-				_start = _new;
-				_end = _new;
+				_ptr = new Elem<value_type>;
+				_ptr->data = val;
+				_ptr->next = _tail;
+				_start = _ptr;
+				_end = _ptr;
 				_tail->prev = _end;
 			}
 			else
 			{
-				_new = new Elem<value_type>;
-				_new->data = val;
-				_new->next = _start;
-				_start->prev = _new;
-				_start = _new;
+				_ptr = new Elem<value_type>;
+				_ptr->data = val;
+				_ptr->next = _start;
+				_start->prev = _ptr;
+				_start = _ptr;
 			}
 			_start->prev = _head;
 			_head->next = _start;
@@ -175,20 +175,20 @@ namespace ft
 		void		push_back(const value_type &val) {
 			if (empty())
 			{
-				_new = new Elem<value_type>;
-				_new->data = val;
-				_new->prev = _head;
-				_start = _new;
-				_end = _new;
+				_ptr = new Elem<value_type>;
+				_ptr->data = val;
+				_ptr->prev = _head;
+				_start = _ptr;
+				_end = _ptr;
 				_head->next = _start;
 			}
 			else
 			{
-				_new = new Elem<value_type>;
-				_new->data = val;
-				_new->prev = _end;
-				_end->next = _new;
-				_end = _new;
+				_ptr = new Elem<value_type>;
+				_ptr->data = val;
+				_ptr->prev = _end;
+				_end->next = _ptr;
+				_end = _ptr;
 			}
 			_end->next = _tail;
 			_tail->prev = _end;
@@ -206,18 +206,22 @@ namespace ft
 		iterator	insert(iterator position, const value_type &val) {
 			Elem<value_type>	*tmp = new Elem<value_type>;
 			iterator			it = begin();
-			_new = _start;
+			_ptr = _start;
 			while (it != position)
 			{
 				it++;
-				_new = _new->next;
+				_ptr = _ptr->next;
 			}
 			tmp->data = val;
-			tmp->prev = _new->prev;
-			tmp->next = _new;
-			_new->prev->next = tmp;
-			_new->prev = tmp;
-			return (--it);
+			tmp->prev = _ptr->prev;
+			tmp->next = _ptr;
+			tmp->prev->next = tmp;
+			_ptr->prev = tmp;
+			if (position == begin())
+				_start = tmp;
+			if (position == end())
+				_end = tmp;
+			return (iterator(tmp));
 		};
 		void		insert(iterator position, size_type n, const value_type &val) {
 			for (size_t i = 0; i < n; i++)
@@ -253,17 +257,20 @@ namespace ft
 			}
 			tmp->prev->next = tmp->next;
 			tmp->next->prev = tmp->prev;
+			_ptr = tmp->next;
 			delete tmp;
 			_size--;
-			return (++it);
+			return (iterator(_ptr));
 		};
 		iterator	erase(iterator first, iterator last) {
+			iterator tmp;
 			while (first != last)
 			{
-				erase(first);
+				tmp = first;
 				first++;
+				erase(tmp);
 			}
-			return (first);
+			return (last);
 		};
 		void		swap(list &x) {
 			list	tmp(x);
@@ -294,12 +301,31 @@ namespace ft
 		};
 
 		/* Operations */
-		void	splice(iterator position, list &x);
-		void	splice(iterator position, list &x, iterator i);
-		void	splice(iterator position, list &x, iterator first, iterator last);
-		void	remove(const value_type &val);
+		void	splice(iterator position, list &x) {
+			splice(position, x, x.begin(), x.end());
+		};
+		void	splice(iterator position, list &x, iterator i) {
+			insert(position, *i);
+			x.erase(i);
+		};
+		void	splice(iterator position, list &x, iterator first, iterator last) {
+			insert(position, first, last);
+			x.erase(first, last);
+		};
+		void	remove(const value_type &val) {
+			iterator it = begin();
+			while (it != end())
+			{
+				if (*it == val)
+					it = erase(it);
+				else
+					it++;
+			}
+		};
 		template <class Predicate>
-		void	remove_if(Predicate pred);
+		void	remove_if(Predicate pred) {
+			
+		};
 		void	unique();
 		template <class BinaryPredicate>
 		void	unique(BinaryPredicate binary_pred);
@@ -309,14 +335,16 @@ namespace ft
 		void	sort();
 		template <class Compare>
 		void	sort(Compare comp);
-		void	reverse();
+		void	reverse() {
+
+		};
 
 		private:
 		Elem<value_type>	*_head;
 		Elem<value_type>	*_start;
 		Elem<value_type>	*_end;
 		Elem<value_type>	*_tail;
-		Elem<value_type>	*_new;
+		Elem<value_type>	*_ptr;
 		size_type			_size;
 		allocator_type		_alloc;
 

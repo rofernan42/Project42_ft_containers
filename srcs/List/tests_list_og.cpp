@@ -170,5 +170,9 @@ int main(void)
 	print_cap(lst4);
 	print_content(lst4);
 
+	std::cout << "return value of erase lst2 begin to end: " << *lst2.erase(lst2.begin(), lst2.end()) << std::endl;
+	print_cap(lst2);
+	print_content(lst2);
+
 	return (0);
 }

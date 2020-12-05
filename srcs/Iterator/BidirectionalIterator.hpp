@@ -111,7 +111,7 @@ namespace ft
 		ReverseBidirectional() {
 			_ptr = nullptr;
 		};
-		ReverseBidirectional(pointer ptr) {
+		ReverseBidirectional(Elem<value_type> *ptr) {
 			_ptr = ptr;
 		};
 		ReverseBidirectional(const iterator &x) {
