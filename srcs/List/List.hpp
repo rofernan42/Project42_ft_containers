@@ -221,6 +221,7 @@ namespace ft
 				_start = tmp;
 			if (position == end())
 				_end = tmp;
+			_size++;
 			return (iterator(tmp));
 		};
 		void		insert(iterator position, size_type n, const value_type &val) {
@@ -324,19 +325,120 @@ namespace ft
 		};
 		template <class Predicate>
 		void	remove_if(Predicate pred) {
-			
+			iterator it = begin();
+			while (it != end())
+			{
+				if (pred(*it))
+					it = erase(it);
+				else
+					it++;
+			}
 		};
-		void	unique();
+		void	unique() {
+			iterator it = begin();
+			iterator tmp = begin();
+			tmp++;
+			while (it != end() && tmp != end())
+			{
+				if (*tmp == *it)
+					tmp = erase(tmp);
+				else
+				{
+					tmp++;
+					it++;
+				}
+			}
+		};
 		template <class BinaryPredicate>
-		void	unique(BinaryPredicate binary_pred);
-		void	merge(list &x);
+		void	unique(BinaryPredicate binary_pred) {
+			iterator it = begin();
+			iterator tmp = begin();
+			tmp++;
+			while (it != end() && tmp != end())
+			{
+				if (binary_pred(*tmp, *it))
+					tmp = erase(tmp);
+				else
+				{
+					tmp++;
+					it++;
+				}
+			}
+		};
+		void	merge(list &x) {
+			if (this == &x)
+				return ;
+			int n = 0;
+			if (_is_sorted() && x._is_sorted())
+				n = 1;
+			_end->next = x._start;
+			x._start->prev = _end;
+			x._end->next = _tail;
+			_tail->prev = x._end;
+			_end = x._end;
+			_size += x._size;
+			x._size = 0;
+			x._start = x._tail;
+			x._end = x._head;
+			if (n == 1)
+				sort();
+		};
 		template <class Compare>
-		void	merge(list &x, Compare comp);
-		void	sort();
+		void	merge(list &x, Compare comp) {
+			if (this == &x)
+				return ;
+			int n = 0;
+			if (_is_sorted(comp) && x._is_sorted(comp))
+				n = 1;
+			_end->next = x._start;
+			x._start->prev = _end;
+			x._end->next = _tail;
+			_tail->prev = x._end;
+			_end = x._end;
+			_size += x._size;
+			x._size = 0;
+			x._start = x._tail;
+			x._end = x._head;
+			if (n == 1)
+				sort(comp);
+		};
+		void	sort() {
+			value_type tmp;
+			_ptr = _start;
+			for (size_t i = 0; i < _size; i++)
+			{
+				_ptr = _ptr->next;
+				if (_ptr->prev->data > _ptr->data)
+				{
+					tmp = _ptr->data;
+					_ptr->data = _ptr->prev->data;
+					_ptr->prev->data = tmp;
+					i = 0;
+					_ptr = _start;
+				}
+			}
+		};
 		template <class Compare>
-		void	sort(Compare comp);
+		void	sort(Compare comp) {
+			value_type tmp;
+			_ptr = _start;
+			for (size_t i = 0; i < _size; i++)
+			{
+				_ptr = _ptr->next;
+				if (comp(_ptr->data, _ptr->prev->data))
+				{
+					tmp = _ptr->data;
+					_ptr->data = _ptr->prev->data;
+					_ptr->prev->data = tmp;
+					i = 0;
+					_ptr = _start;
+				}
+			}
+		};
 		void	reverse() {
-
+			iterator it = begin();
+			for (size_t i = 0; i < _size - 1; i++)
+				splice(it, *this, iterator(_end));
 		};
 
 		private:
@@ -358,6 +460,33 @@ namespace ft
 			_start = _tail;
 			_end = _head;
 			_size = 0;
+		};
+		bool	_is_sorted() {
+			iterator it = begin();
+			iterator it2 = begin();
+			it2++;
+			while (it != end() && it2 != end())
+			{
+				if (*it > *it2)
+					return (false);
+				it++;
+				it2++;
+			}
+			return (true);
+		};
+		template <class Compare>
+		bool	_is_sorted(Compare comp) {
+			iterator it = begin();
+			iterator it2 = begin();
+			it2++;
+			while (it != end() && it2 != end())
+			{
+				if (comp(*it2, *it))
+					return (false);
+				it++;
+				it2++;
+			}
+			return (true);
 		};
 	};
 };
