@@ -401,5 +401,23 @@ int main(void)
 	print_cap(lst);
 	print_content(lst);
 
+	std::cout << "********** LST2 **********\n";
+	print_cap(lst2);
+	print_content(lst2);
+
+	std::cout << "********** LST2 ASSIGN (5, 999) **********\n";
+	lst2.assign(5, 999);
+	print_cap(lst2);
+	print_content(lst2);
+
+	std::cout << "********** LST SPLICE LST2 **********\n";
+	lst.splice(lst.begin(), lst2);
+	print_cap(lst);
+	print_content(lst);
+
+	std::cout << "********** LST2 **********\n";
+	print_cap(lst2);
+	print_content(lst2);
+
 	return (0);
 }
