@@ -78,5 +78,51 @@ int main(void)
 	print_content(stk3);
 	print_access(stk3);
 
+	/* RELATIONAL OPERATORS */
+
+	std::cout << "\n\n\n******************** TESTS RELATIONAL OPERATORS ********************\n";
+
+	ft::stack<int> foo;
+	foo.push(100);
+	foo.push(100);
+	foo.push(100);
+	ft::stack<int> bar;
+	bar.push(200);
+	bar.push(200);
+
+	if (foo == bar) std::cout << "foo and bar are equal\n";
+	if (foo != bar) std::cout << "foo and bar are not equal\n";
+	if (foo < bar) std::cout << "foo is less than bar\n";
+	if (foo > bar) std::cout << "foo is greater than bar\n";
+	if (foo <= bar) std::cout << "foo is less than or equal to bar\n";
+	if (foo >= bar) std::cout << "foo is greater than or equal to bar\n";
+
+	std::cout << std::endl;
+
+	ft::stack<int> a;
+	a.push(10);
+	a.push(20);
+	a.push(30);
+  	ft::stack<int> b;
+	b.push(10);
+	b.push(20);
+	b.push(30);
+  	ft::stack<int> c;
+	c.push(30);
+	c.push(20);
+	c.push(10);
+	ft::stack<int> d;
+	d.push(30);
+	d.push(20);
+
+  	if (a == b) std::cout << "a and b are equal\n";
+  	if (b != c) std::cout << "b and c are not equal\n";
+  	if (b < c) std::cout << "b is less than c\n";
+  	if (c > b) std::cout << "c is greater than b\n";
+  	if (a <= b) std::cout << "a is less than or equal to b\n";
+  	if (a >= b) std::cout << "a is greater than or equal to b\n";
+	if (c < d) std::cout << "c is less than d\n";
+  	if (c > d) std::cout << "c is greater than d\n";
+
 	return (0);
 }
