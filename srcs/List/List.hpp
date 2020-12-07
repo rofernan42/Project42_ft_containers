@@ -489,6 +489,60 @@ namespace ft
 			return (true);
 		};
 	};
+
+	/* Non-member function overloads */
+	template <class T, class Alloc>
+	bool	operator==(list<T, Alloc> &lhs, list<T, Alloc> &rhs) {
+		if (lhs.size() != rhs.size())
+			return (false);
+		typename list<T>::iterator itl = lhs.begin();
+		typename list<T>::iterator itr = rhs.begin();
+		while (itl != lhs.end() && itr != rhs.end())
+		{
+			if (*itl != *itr)
+				return (false);
+			itl++;
+			itr++;
+		}
+		return (true);
+	};
+	template <class T, class Alloc>
+	bool	operator!=(list<T, Alloc> &lhs, list<T, Alloc> &rhs) {
+		return (!(lhs == rhs));
+	};
+	template <class T, class Alloc>
+	bool	operator<(list<T, Alloc> &lhs, list<T, Alloc> &rhs) {
+		typename list<T>::iterator itl = lhs.begin();
+		typename list<T>::iterator itr = rhs.begin();
+		while (itl != lhs.end() && itr != rhs.end())
+		{
+			if (*itl < *itr)
+				return (true);
+			else if (*itl > *itr)
+				return (false);
+			itl++;
+			itr++;
+		}
+		if (lhs.size() >= rhs.size())
+			return (false);
+		return (true);
+	};
+	template <class T, class Alloc>
+	bool	operator<=(list<T, Alloc> &lhs, list<T, Alloc> &rhs) {
+		return (!(rhs < lhs));
+	};
+	template <class T, class Alloc>
+	bool	operator>(list<T, Alloc> &lhs, list<T, Alloc> &rhs) {
+		return (rhs < lhs);
+	};
+	template <class T, class Alloc>
+	bool	operator>=(list<T, Alloc> &lhs, list<T, Alloc> &rhs) {
+		return (!(lhs < rhs));
+	};
+	template <class T, class Alloc>
+	void	swap (list<T, Alloc> &x, list<T, Alloc> &y) {
+		x.swap(y);
+	};
 };
 
 #endif

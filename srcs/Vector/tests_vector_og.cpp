@@ -212,6 +212,48 @@ int main(void)
 	print_cap(vec6);
 	print_content(vec6);
 	print_access(vec6);
+
+	/* RELATIONAL OPERATORS */
+
+	std::cout << "\n\n\n******************** TESTS RELATIONAL OPERATORS ********************\n";
+
+	std::vector<int> foo (3,100);
+	std::vector<int> bar (2,200);
+
+	if (foo == bar) std::cout << "foo and bar are equal\n";
+	if (foo != bar) std::cout << "foo and bar are not equal\n";
+	if (foo < bar) std::cout << "foo is less than bar\n";
+	if (foo > bar) std::cout << "foo is greater than bar\n";
+	if (foo <= bar) std::cout << "foo is less than or equal to bar\n";
+	if (foo >= bar) std::cout << "foo is greater than or equal to bar\n";
+
+	std::cout << std::endl;
+
+	std::vector<int> a;
+	a.push_back(10);
+	a.push_back(20);
+	a.push_back(30);
+  	std::vector<int> b;
+	b.push_back(10);
+	b.push_back(20);
+	b.push_back(30);
+  	std::vector<int> c;
+	c.push_back(30);
+	c.push_back(20);
+	c.push_back(10);
+	std::vector<int> d;
+	d.push_back(30);
+	d.push_back(20);
+
+  	if (a == b) std::cout << "a and b are equal\n";
+  	if (b != c) std::cout << "b and c are not equal\n";
+  	if (b < c) std::cout << "b is less than c\n";
+  	if (c > b) std::cout << "c is greater than b\n";
+  	if (a <= b) std::cout << "a is less than or equal to b\n";
+  	if (a >= b) std::cout << "a is greater than or equal to b\n";
+	if (c < d) std::cout << "c is less than d\n";
+  	if (c > d) std::cout << "c is greater than d\n";
+
 	// std::cout << vec[0] << std::endl;
 	// std::cout << vec[1] << std::endl;
 	// std::cout << vec[2] << std::endl;
