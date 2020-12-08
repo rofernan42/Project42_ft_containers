@@ -421,7 +421,24 @@ int main(void)
 	print_cap(lst5);
 	print_content(lst5);
 
+	std::cout << "********** ERASE LST5 **********\n";
+	while (!lst5.empty())
+        lst5.pop_back();
+	print_cap(lst5);
+	print_content(lst5);
+
+	std::cout << "********** ADD VALUES TO LST5 **********\n";
+	lst5.push_back(100);
+	lst5.push_front(200);
+	lst5.push_back(300);
+	print_cap(lst5);
+	print_content(lst5);
+
 	std::cout << "********** CLEAR LST5 **********\n";
+	lst5.clear();
+	print_cap(lst5);
+	print_content(lst5);
+
 	lst5.clear();
 	print_cap(lst5);
 	print_content(lst5);

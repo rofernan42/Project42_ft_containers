@@ -164,6 +164,8 @@ namespace ft
 			_size++;
 		};
 		void		pop_front() {
+			if (_size == 0)
+				return ;
 			Elem<value_type>	*tmp;
 			tmp = _start;
 			_start->next->prev = _head;
@@ -195,6 +197,13 @@ namespace ft
 			_size++;
 		};
 		void		pop_back() {
+			if (_size == 0)
+				return ;
+			if (_size == 1)
+			{
+				pop_front();
+				return ;
+			}
 			Elem<value_type>	*tmp;
 			tmp = _end;
 			_end->prev->next = _tail;
@@ -291,14 +300,7 @@ namespace ft
 					push_back(val);
 		};
 		void		clear() {
-			Elem<value_type> *tmp;
-			while (_start != _tail)
-			{
-				tmp = _start;
-				_start = _start->next;
-				delete tmp;
-			}
-			_size = 0;
+			erase(begin(), end());
 		};
 
 		/* Operations */
