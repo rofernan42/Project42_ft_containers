@@ -29,10 +29,10 @@ namespace ft
 		typedef const value_type &const_reference;
 		typedef value_type *pointer;
 		typedef const value_type *const_pointer;
-		typedef BidirectionalIterator<T> iterator;
-		typedef BidirectionalIterator<const T> const_iterator;
-		typedef ReverseBidirectional<T> reverse_iterator;
-		typedef ReverseBidirectional<const T> const_reverse_iterator;
+		typedef BidirectionalIterator<value_type, Elem<value_type>*> iterator;
+		typedef BidirectionalIterator<const value_type, Elem<value_type>*> const_iterator;
+		typedef ReverseBidirectional<value_type, Elem<value_type>*> reverse_iterator;
+		typedef ReverseBidirectional<const value_type, Elem<value_type>*> const_reverse_iterator;
 		typedef ptrdiff_t difference_type;
 		typedef size_t size_type;
 
@@ -48,7 +48,7 @@ namespace ft
 			_init_list();
 			assign(first, last);
 		};
-		list(list &x) {
+		list(const list &x) {
 			_init_list();
 			assign(x.begin(), x.end());
 		};
@@ -57,7 +57,7 @@ namespace ft
 			delete _head;
 			delete _tail;
 		};
-		list	&operator=(list &x) {
+		list	&operator=(const list &x) {
 			if (this != &x)
 				assign(x.begin(), x.end());
 			return (*this);
@@ -492,11 +492,11 @@ namespace ft
 
 	/* Non-member function overloads */
 	template <class T, class Alloc>
-	bool	operator==(list<T, Alloc> &lhs, list<T, Alloc> &rhs) {
+	bool	operator==(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs) {
 		if (lhs.size() != rhs.size())
 			return (false);
-		typename list<T>::iterator itl = lhs.begin();
-		typename list<T>::iterator itr = rhs.begin();
+		typename list<T>::const_iterator itl = lhs.begin();
+		typename list<T>::const_iterator itr = rhs.begin();
 		while (itl != lhs.end() && itr != rhs.end())
 		{
 			if (*itl != *itr)
@@ -507,13 +507,13 @@ namespace ft
 		return (true);
 	};
 	template <class T, class Alloc>
-	bool	operator!=(list<T, Alloc> &lhs, list<T, Alloc> &rhs) {
+	bool	operator!=(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs) {
 		return (!(lhs == rhs));
 	};
 	template <class T, class Alloc>
-	bool	operator<(list<T, Alloc> &lhs, list<T, Alloc> &rhs) {
-		typename list<T>::iterator itl = lhs.begin();
-		typename list<T>::iterator itr = rhs.begin();
+	bool	operator<(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs) {
+		typename list<T>::const_iterator itl = lhs.begin();
+		typename list<T>::const_iterator itr = rhs.begin();
 		while (itl != lhs.end() && itr != rhs.end())
 		{
 			if (*itl < *itr)
@@ -528,19 +528,19 @@ namespace ft
 		return (true);
 	};
 	template <class T, class Alloc>
-	bool	operator<=(list<T, Alloc> &lhs, list<T, Alloc> &rhs) {
+	bool	operator<=(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs) {
 		return (!(rhs < lhs));
 	};
 	template <class T, class Alloc>
-	bool	operator>(list<T, Alloc> &lhs, list<T, Alloc> &rhs) {
+	bool	operator>(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs) {
 		return (rhs < lhs);
 	};
 	template <class T, class Alloc>
-	bool	operator>=(list<T, Alloc> &lhs, list<T, Alloc> &rhs) {
+	bool	operator>=(const list<T, Alloc> &lhs, const list<T, Alloc> &rhs) {
 		return (!(lhs < rhs));
 	};
 	template <class T, class Alloc>
-	void	swap (list<T, Alloc> &x, list<T, Alloc> &y) {
+	void	swap (const list<T, Alloc> &x, const list<T, Alloc> &y) {
 		x.swap(y);
 	};
 };

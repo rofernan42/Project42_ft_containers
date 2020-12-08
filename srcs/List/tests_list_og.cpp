@@ -72,9 +72,6 @@ int main(void)
 	lst.push_back(10);
 	lst.push_back(45);
 
-	std::cout << "begin: " << *lst.begin() << std::endl;
-	std::cout << "end: " << *lst.end() << std::endl;
-
 	print_cap(lst);
 	print_content(lst);
 	print_access(lst);
@@ -418,6 +415,16 @@ int main(void)
 	std::cout << "********** LST2 **********\n";
 	print_cap(lst2);
 	print_content(lst2);
+
+	std::list<int> lst5(lst);
+	std::cout << "********** LST5 **********\n";
+	print_cap(lst5);
+	print_content(lst5);
+
+	std::cout << "********** CLEAR LST5 **********\n";
+	lst5.clear();
+	print_cap(lst5);
+	print_content(lst5);
 
 	/* RELATIONAL OPERATORS */
 

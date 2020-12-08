@@ -27,7 +27,7 @@ namespace ft
 		Elem	*next;
 	};
 
-	template <class T>
+	template <class T, class P>
 	class BidirectionalIterator
 	{
 		public:
@@ -36,13 +36,14 @@ namespace ft
 		typedef ptrdiff_t difference_type;
 		typedef T* pointer;
 		typedef T& reference;
+		typedef P pointer_Elem;
 		typedef bidirectional_iterator_tag iterator_category;
 		typedef size_t size_type;
 
 		BidirectionalIterator() {
 			_ptr = nullptr;
 		};
-		BidirectionalIterator(Elem<value_type> *ptr) {
+		BidirectionalIterator(pointer_Elem ptr) {
 			_ptr = ptr;
 		};
 		BidirectionalIterator(const iterator &x) {
@@ -94,10 +95,10 @@ namespace ft
 		};
 
 		private:
-		Elem<value_type>	*_ptr;
+		pointer_Elem	_ptr;
 	};
 
-	template <class T>
+	template <class T, class P>
 	class ReverseBidirectional
 	{
 		public:
@@ -106,12 +107,13 @@ namespace ft
 		typedef ptrdiff_t difference_type;
 		typedef T* pointer;
 		typedef T& reference;
+		typedef P pointer_Elem;
 		typedef size_t size_type;
 
 		ReverseBidirectional() {
 			_ptr = nullptr;
 		};
-		ReverseBidirectional(Elem<value_type> *ptr) {
+		ReverseBidirectional(pointer_Elem ptr) {
 			_ptr = ptr;
 		};
 		ReverseBidirectional(const iterator &x) {
@@ -164,7 +166,7 @@ namespace ft
 		};
 
 		private:
-		Elem<value_type>	*_ptr;
+		pointer_Elem	_ptr;
 	};
 };
 
