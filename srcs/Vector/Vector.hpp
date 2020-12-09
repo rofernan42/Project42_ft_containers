@@ -147,10 +147,12 @@ namespace ft
 			if (n > _cap)
 			{
 				tmp = _alloc.allocate(n);
-				for (size_t i = 0; i < _size; i++)
-					_alloc.construct(&tmp[i], _vec[i]);
 				if (!empty())
+				{
+					for (size_t i = 0; i < _size; i++)
+						_alloc.construct(&tmp[i], _vec[i]);
 					_alloc.deallocate(_vec, _cap);
+				}
 				_cap = n;
 				_vec = tmp;
 			}

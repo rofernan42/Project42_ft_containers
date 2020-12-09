@@ -270,19 +270,25 @@ int main(void)
 	print_access(vecst);
 
 	std::cout << "\n********** ERASE STRING VECTOR **********\n";
-	vecst.erase(vecst.begin() + 1, vecst.begin() + 4);
+	std::cout << "return value erase: " << *vecst.erase(vecst.begin() + 1, vecst.begin() + 4) << std::endl;
 	print_cap(vecst);
 	print_content_iterator(vecst);
 	print_access(vecst);
 
 	std::cout << "\n********** ERASE 1 ELEM STRING VECTOR **********\n";
-	vecst.erase(vecst.begin() + 2);
+	std::cout << "return value erase: " << *vecst.erase(vecst.begin() + 2) << std::endl;
+	print_cap(vecst);
+	print_content_iterator(vecst);
+	print_access(vecst);
+
+	std::cout << "\n********** ERASE LAST ELEM STRING VECTOR **********\n";
+	std::cout << "return value erase: " << *vecst.erase(vecst.end() - 1) << std::endl;
 	print_cap(vecst);
 	print_content_iterator(vecst);
 	print_access(vecst);
 	
 	std::cout << "********** INSERT STRING VECTOR **********\n";
-	vecst.insert(vecst.begin() + 1, "world");
+	std::cout << "return value insert: " << *vecst.insert(vecst.begin() + 1, "world") << std::endl;
 	print_cap(vecst);
 	print_content(vecst);
 	print_access(vecst);
@@ -316,9 +322,6 @@ int main(void)
 	print_cap(vecst);
 	print_content(vecst);
 	print_access(vecst);
-
-
-
 
 	// std::cout << vec[0] << std::endl;
 	// std::cout << vec[1] << std::endl;
