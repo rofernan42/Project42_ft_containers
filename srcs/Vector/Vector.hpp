@@ -120,7 +120,7 @@ namespace ft
 				value_type *tmp;
 				tmp = _alloc.allocate(n);
 				for (size_t i = 0; i < n; i++)
-					tmp[i] = _vec[i];
+					_alloc.construct(&tmp[i], _vec[i]);
 				clear();
 				_vec = tmp;
 				_size = n;
@@ -141,7 +141,6 @@ namespace ft
 		};
 		void		reserve (size_type n) {
 			value_type	*tmp;
-
 			if (n > max_size())
 				throw (std::length_error("new capacity (which is " + std::to_string(n) \
 				+ ") > max_size() (which is " + std::to_string(max_size()) + ")"));
@@ -149,7 +148,7 @@ namespace ft
 			{
 				tmp = _alloc.allocate(n);
 				for (size_t i = 0; i < _size; i++)
-					tmp[i] = _vec[i];
+					_alloc.construct(&tmp[i], _vec[i]);
 				if (!empty())
 					_alloc.deallocate(_vec, _cap);
 				_cap = n;
@@ -217,7 +216,7 @@ namespace ft
 		void		push_back(const value_type &val) {
 			if (_vec == nullptr || _cap <= _size + 1)
 				reserve(_size + 1);
-			_vec[_size] = val;
+			_alloc.construct(&_vec[_size], val);
 			_size++;
 		};
 		void		pop_back() {
@@ -230,8 +229,8 @@ namespace ft
 				reserve(_size + 1);
 			_size++;
 			for (size_t i = _size - 1; i > (size_t)pos; i--)
-				_vec[i] = _vec[i - 1];
-			_vec[pos] = val;
+				_alloc.construct(&_vec[i], _vec[i - 1]);
+			_alloc.construct(&_vec[pos], val);
 			return (begin() + pos);
 		};
 		void		insert(iterator position, size_type n, const value_type &val) {
@@ -239,27 +238,20 @@ namespace ft
 
 			if (_cap <= _size + n)
 				reserve(_size + n);
-			_size = _size + n;
-			for (size_t i = _size - 1; i > pos + n - 1; i--)
-				_vec[i] = _vec[i - n];
-			for (size_t i = pos; i < pos + n; i++)
-				_vec[i] = val;
+			for (size_t i = 0; i < n; i++)
+				insert(begin() + pos, val);
 		};
 		void		insert(iterator position, iterator first, iterator last) {
 			difference_type range = last - first;
 			difference_type pos = position - begin();
-			
+
 			if (_cap <= _size + range)
 				reserve(_size + range);
-			_size = _size + range;
-			for (size_t i = _size - 1; i > (size_t)pos + (size_t)range - 1; i--)
-				_vec[i] = _vec[i - range];
-			iterator it = begin();
 			while (first != last)
 			{
-				*(it + pos) = *first;
+				insert(begin() + pos, *first);
+				pos++;
 				first++;
-				it++;
 			}
 		};
 		iterator	erase(iterator position) {
@@ -271,9 +263,8 @@ namespace ft
 		};
 		iterator	erase(iterator first, iterator last) {
 			difference_type range = last - first;
-
-			for (difference_type i = first - begin(); i < end() - first; i++)
-				_vec[i] = _vec[i + range];
+			for (iterator it = first; it != end() - range; it++)
+				*it = *(it + range);
 			_size -= range;
 			_cap = _size;
 			return (first);

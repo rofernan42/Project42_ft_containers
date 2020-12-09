@@ -73,13 +73,13 @@ int main(void)
 	std::vector<int>	vec;
 	std::vector<int>	vec2;
 
-	std::cout << "*** VEC ***\n";
+	std::cout << "********** VEC **********\n";
 	print_cap(vec);
 
-	std::cout << "*** VEC2 ***\n";
+	std::cout << "********** VEC2 **********\n";
 	print_cap(vec2);
 
-	std::cout << "*** VEC - push_back values ***\n";
+	std::cout << "********** VEC - push_back values **********\n";
 	vec.push_back(5);
 	vec.push_back(2);
 	vec.push_back(4);
@@ -253,6 +253,72 @@ int main(void)
   	if (a >= b) std::cout << "a is greater than or equal to b\n";
 	if (c < d) std::cout << "c is less than d\n";
   	if (c > d) std::cout << "c is greater than d\n";
+
+
+	std::cout << "\n********** TEST STRING VECTOR **********\n";
+	std::vector<std::string>	vecst;
+	vecst.push_back("hello");
+	vecst.push_back("world");
+	vecst.push_back("lala");
+	vecst.push_back("popo");
+	vecst.push_back("lolo");
+	vecst.push_back("papapapa");
+	vecst.push_back("nonononono");
+	vecst.push_back("hehehe");
+	print_cap(vecst);
+	print_content_iterator(vecst);
+	print_access(vecst);
+
+	std::cout << "\n********** ERASE STRING VECTOR **********\n";
+	vecst.erase(vecst.begin() + 1, vecst.begin() + 4);
+	print_cap(vecst);
+	print_content_iterator(vecst);
+	print_access(vecst);
+
+	std::cout << "\n********** ERASE 1 ELEM STRING VECTOR **********\n";
+	vecst.erase(vecst.begin() + 2);
+	print_cap(vecst);
+	print_content_iterator(vecst);
+	print_access(vecst);
+	
+	std::cout << "********** INSERT STRING VECTOR **********\n";
+	vecst.insert(vecst.begin() + 1, "world");
+	print_cap(vecst);
+	print_content(vecst);
+	print_access(vecst);
+
+	std::cout << "********** CREATE STRING VECTOR 2 **********\n";
+	std::vector<std::string> vecst2(5, "rom");
+	print_cap(vecst2);
+	print_content(vecst2);
+	print_access(vecst2);
+
+	std::cout << "********** INSERT STRING VECTOR 2 **********\n";
+	vecst2.insert(vecst2.begin() + 3, vecst.begin(), vecst.end());
+	print_cap(vecst2);
+	print_content(vecst2);
+	print_access(vecst2);
+
+	std::cout << "********** INSERT STRING VECTOR 3 **********\n";
+	vecst2.insert(vecst2.begin() + 5, 4, "chop chop");
+	print_cap(vecst2);
+	print_content(vecst2);
+	print_access(vecst2);
+
+	std::cout << "********** RESIZE n < size STRING VECTOR **********\n";
+	vecst.resize(1);
+	print_cap(vecst);
+	print_content(vecst);
+	print_access(vecst);
+
+	std::cout << "********** RESIZE n > size STRING VECTOR **********\n";
+	vecst.resize(6, "lili");
+	print_cap(vecst);
+	print_content(vecst);
+	print_access(vecst);
+
+
+
 
 	// std::cout << vec[0] << std::endl;
 	// std::cout << vec[1] << std::endl;
