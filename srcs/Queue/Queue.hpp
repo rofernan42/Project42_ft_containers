@@ -14,6 +14,7 @@
 # define QUEUE_HPP
 
 # include "../List/List.hpp"
+# include <deque>
 
 namespace ft
 {
@@ -29,7 +30,6 @@ namespace ft
         queue(const container_type &ctnr = container_type()) {
             _ctnr = ctnr;
         };
-        ~queue() {};
 
         bool	empty() const {
 			if (_ctnr.size() == 0)
@@ -60,32 +60,45 @@ namespace ft
 
         private:
         container_type  _ctnr;
+
+		template <class S, class C>
+		friend bool	operator==(const queue<S, C> &lhs, const queue<S, C> &rhs);
+		template <class S, class C>
+		friend bool	operator!=(const queue<S, C> &lhs, const queue<S, C> &rhs);
+		template <class S, class C>
+		friend bool	operator<(const queue<S, C> &lhs, const queue<S, C> &rhs);
+		template <class S, class C>
+		friend bool	operator<=(const queue<S, C> &lhs, const queue<S, C> &rhs);
+		template <class S, class C>
+		friend bool	operator>(const queue<S, C> &lhs, const queue<S, C> &rhs);
+		template <class S, class C>
+		friend bool	operator>=(const queue<S, C> &lhs, const queue<S, C> &rhs);
     };
 
     /* Non-member function overloads */
 	template <class T, class Container>
 	bool	operator==(const queue<T, Container> &lhs, const queue<T, Container> &rhs) {
-		return (lhs == rhs);
+		return (lhs._ctnr == rhs._ctnr);
 	};
 	template <class T, class Container>
 	bool	operator!=(const queue<T, Container> &lhs, const queue<T, Container> &rhs) {
-		return (lhs != rhs);
+		return (lhs._ctnr != rhs._ctnr);
 	};
 	template <class T, class Container>
 	bool	operator<(const queue<T, Container> &lhs, const queue<T, Container> &rhs) {
-		return (lhs < rhs);
+		return (lhs._ctnr < rhs._ctnr);
 	};
 	template <class T, class Container>
 	bool	operator<=(const queue<T, Container> &lhs, const queue<T, Container> &rhs) {
-		return (lhs <= rhs);
+		return (lhs._ctnr <= rhs._ctnr);
 	};
 	template <class T, class Container>
 	bool	operator>(const queue<T, Container> &lhs, const queue<T, Container> &rhs) {
-		return (lhs > rhs);
+		return (lhs._ctnr > rhs._ctnr);
 	};
 	template <class T, class Container>
 	bool	operator>=(const queue<T, Container> &lhs, const queue<T, Container> &rhs) {
-		return (lhs >= rhs);
+		return (lhs._ctnr >= rhs._ctnr);
 	};
 	template <class T, class Container>
 	void	swap(queue<T, Container> &x, queue<T, Container> &y) {
