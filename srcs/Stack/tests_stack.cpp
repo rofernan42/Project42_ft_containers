@@ -64,7 +64,7 @@ int main(void)
 
 	std::cout << "********** STK2 = STK **********\n";
 	print_content(stk2);
-	print_access(stk);
+	print_access(stk2);
 
 	std::cout << "********** STK.POP() **********\n";
 	stk.pop();
