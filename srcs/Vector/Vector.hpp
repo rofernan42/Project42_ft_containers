@@ -65,7 +65,7 @@ namespace ft
 			assign(x.begin(), x.end());
 		};
 		~vector() {
-			if (!empty())
+			if (_vec)
 				clear();
 		};
 		vector	&operator=(const vector &x) {
@@ -288,6 +288,7 @@ namespace ft
 		};
 		void		clear() {
 			_alloc.deallocate(_vec, _cap);
+			_vec = nullptr;
 			_size = 0;
 			_cap = 0;
 		};
