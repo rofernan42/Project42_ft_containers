@@ -16,8 +16,8 @@
 template <class T>
 void	print_cap(ft::stack<T> stk)
 {
-	std::cout << "stk.size():\t" << stk.size() << std::endl;
-	std::cout << "stk.empty():\t" << stk.empty() << std::endl;
+	std::cout << "stk.size(): " << stk.size() << std::endl;
+	std::cout << "stk.empty(): " << stk.empty() << std::endl;
 	std::cout << std::endl;
 }
 
@@ -123,6 +123,14 @@ int main(void)
   	if (a >= b) std::cout << "a is greater than or equal to b\n";
 	if (c < d) std::cout << "c is less than d\n";
   	if (c > d) std::cout << "c is greater than d\n";
+
+	std::cout << "\n********** TEST STRING STACK **********\n";
+	ft::stack<std::string> str;
+	str.push("hello");
+	str.push("world");
+	print_cap(str);
+	print_content(str);
+	print_access(str);
 
 	return (0);
 }

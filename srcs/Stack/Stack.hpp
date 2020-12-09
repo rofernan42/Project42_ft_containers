@@ -31,14 +31,6 @@ namespace ft
 		stack(const container_type &ctnr = container_type()) {
 			_ctnr = ctnr;
 		};
-		~stack() {
-			_ctnr.clear();
-		};
-		// stack	&operator=(const stack &x) {
-		// 	if (this != &x)
-		// 		_ctnr = x._ctnr;
-		// 	return (*this);
-		// };
 
 		bool	empty() const {
 			if (_ctnr.size() == 0)
