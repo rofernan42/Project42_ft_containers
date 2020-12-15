@@ -64,14 +64,27 @@ int main(void)
 	// mp["al"] = 2;
 	// mp["ab"] = 8;
 	std::cout << "********** MP INSERT **********" << std::endl;
-	mp.insert(std::make_pair("lala", 10));
-	std::cout << mp["lala"] << std::endl;
-	// std::cout << "mp.size():\t" << mp.size() << std::endl;
-	// std::cout << "mp.max_size():\t" << mp.max_size() << std::endl;
-	// std::cout << "mp.empty():\t" << mp.empty() << std::endl;
+	mp.insert(std::make_pair("l", 10));
+	std::cout << mp["l"] << std::endl;
+	std::cout << mp["b"] << std::endl;
+	mp["a"] = 4;
+	mp["q"] = 2;
+	mp["i"] = 8;
+	mp["p"] = mp["a"];
+	mp["o"] = 15;
+
+	mp.print();
 
 	print_cap(mp);
-	// print_content_iterator(mp);
+	print_content_iterator(mp);
+
+	mp.erase("a");
+	mp.erase("i");
+
+	mp.print();
+
+	print_cap(mp);
+	print_content_iterator(mp);
 
     return (0);
 }

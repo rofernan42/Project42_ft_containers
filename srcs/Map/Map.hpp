@@ -18,7 +18,6 @@
 # include <utility>
 # include <cstddef>
 # include "../Iterator/BidirectionalIterator.hpp"
-// # include "../Iterator/BidirectionalIterator2.hpp"
 
 namespace ft
 {
@@ -35,20 +34,11 @@ namespace ft
 		typedef const value_type &const_reference;
 		typedef value_type *pointer;
 		typedef const value_type *const_pointer;
-		// typedef nodeBT<Key, T, key_compare> node;
 		typedef nodeBT<std::pair<Key, T>, Key> node;
-		// typedef nodeBT<Key, T> node;
-
 		typedef BidirectionalIterator<std::pair<Key, T>, node*> iterator;
 		typedef BidirectionalIterator<const std::pair<Key, T>, node*> const_iterator;
 		typedef ReverseBidirectional<std::pair<Key, T>, node*> reverse_iterator;
 		typedef ReverseBidirectional<const std::pair<Key, T>, node*> const_reverse_iterator;
-
-		// typedef BidirectionalIterator<const Key, T> iterator;
-		// typedef BidirectionalIterator<const Key, T> const_iterator;
-		// typedef ReverseBidirectional<const Key, T> reverse_iterator;
-		// typedef ReverseBidirectional<const Key, T> const_reverse_iterator;
-
 		typedef ptrdiff_t difference_type;
 		typedef size_t size_type;
 		class value_compare
@@ -78,13 +68,24 @@ namespace ft
 		map(const map &x) {
 			_comp = x._comp;
 			_init_map();
-			if (!x.empty())
+			// if (!x.empty())
 				insert(x.begin(), x.end());
 		};
 		~map() {
 			clear();
+			delete _min;
+			delete _max;
+			delete _root;
 		};
-		map &operator=(const map &x);
+		map &operator=(const map &x) {
+			if (this != &x)
+			{
+				clear();
+				_init_map();
+				insert(x.begin(), x.end());
+			}
+			return (*this);
+		};
 
 		/* Iterators */
 		iterator				begin() {
@@ -125,34 +126,38 @@ namespace ft
 
 		/* Element access */
 		mapped_type	&operator[](const key_type &k) {
-			node *tmp;
-			if (!(tmp = _root->search(_root, k)))
-				insert(value_type(k, 0));
-			return (tmp->data.second);
+			iterator it = find(k);
+			if (it == end())
+				it = insert(value_type(k, mapped_type())).first;
+			return (it->second);
 		};
 
 		/* Modifiers */
 		std::pair<iterator, bool>	insert(const value_type &val) {
-			node *tmp = _root;
 			if (empty())
 			{
 				_root->data = val;
 				_size++;
 				return (std::make_pair(iterator(_root), true));
 			}
+			node *tmp = _root;
 			while (tmp->left || tmp->right)
 			{
 				if (tmp->data.first == val.first)
 					return (std::make_pair(iterator(tmp), false));
 				if (value_comp()(tmp->data, val))
 				{
-					if (tmp->right)
+					if (tmp->right && tmp->right != _max)
 						tmp = tmp->right;
+					else
+						break ;
 				}
 				else
 				{
-					if (tmp->left)
+					if (tmp->left && tmp->left != _min)
 						tmp = tmp->left;
+					else
+						break ;
 				}
 			}
 			if (value_comp()(tmp->data, val))
@@ -174,7 +179,9 @@ namespace ft
 			_size++;
 			return (std::make_pair(iterator(tmp), true));
 		};
-		// iterator					insert(iterator position, const value_type &val);
+		iterator					insert(iterator position, const value_type &val) {
+
+		};
 		void						insert(iterator first, iterator last) {
 			while (first != last)
 			{
@@ -190,24 +197,117 @@ namespace ft
 			}
 		};
 		void		erase(iterator position);
-		size_type	erase(const key_type &k);
-		void		erase(iterator first, iterator last);
+		size_type	erase(const key_type &k) {
+			node		*tmp;
+			size_type	n = 0;
+			if (!(tmp = _root->search(_root, k)))
+				return (n);
+			if ((!tmp->left || tmp->left == _min) \
+			&& (!tmp->right || tmp->right == _max))
+			{
+				if (tmp != _root)
+				{
+					if (value_comp()(tmp->data, tmp->parent->data))
+						tmp->parent->left = nullptr;
+					else
+						tmp->parent->right = nullptr;
+					delete tmp;
+				}
+				else
+				{
+					delete _root;
+					_root = new node();
+				}
+			}
+			else if ((!tmp->left || tmp->left == _min) \
+			&& (tmp->right && tmp->right != _max))
+			{
+				if (tmp != _root)
+				{
+					if (value_comp()(tmp->data, tmp->parent->data))
+						tmp->parent->left = tmp->right;
+					else
+						tmp->parent->right = tmp->right;
+					tmp->right->parent = tmp->parent;
+				}
+				else
+				{
+					tmp->right->parent = nullptr;
+					_root = tmp->right;
+				}
+				delete tmp;
+			}
+			else if ((tmp->left && tmp->left != _min) \
+			&& (!tmp->right || tmp->right == _max))
+			{
+				if (tmp != _root)
+				{
+					if (value_comp()(tmp->data, tmp->parent->data))
+						tmp->parent->left = tmp->left;
+					else
+						tmp->parent->right = tmp->left;
+					tmp->left->parent = tmp->parent;
+				}
+				else
+				{
+					tmp->left->parent = nullptr;
+					_root = tmp->left;
+				}
+				delete tmp;
+			}
+			else if ((tmp->left && tmp->left != _min) && (tmp->right && tmp->right != _max))
+			{
+				if (tmp !=_root)
+				{
+					tmp->data = tmp->nxt()->data;
+					
+				}
+			}
+			_size--;
+			_set_min();
+			_set_max();
+			return (n);
+		};
+		void		erase(iterator first, iterator last) {
+			iterator tmp;
+			while (first != last)
+			{
+				tmp = first;
+				first++;
+				erase(tmp);
+			}
+		};
 		void		swap(map &x);
 		void		clear() {
 			iterator it = begin();
 			while (_min->parent != _root)
 			{
-				delete _min;
+				if (_min->parent->right)
+				{
+					_min->parent->right->parent = _min->parent->parent;
+					_min->parent->parent->left = _min->parent->right;
+				}
+				else
+					_min->parent->parent->left = nullptr;
+				delete _min->parent;
 				_set_min();
 			}
 			while (_max->parent != _root)
 			{
-				delete _max;
+				if (_max->parent->left)
+				{
+					_max->parent->left->parent = _max->parent->parent;
+					_max->parent->parent->right = _max->parent->left;
+				}
+				else
+					_max->parent->parent->right = nullptr;
+				delete _max->parent;
 				_set_max();
 			}
 			delete _min;
 			delete _max;
 			delete _root;
+			_init_map();
 		};
 
 		/* Observers */
@@ -219,15 +319,64 @@ namespace ft
 		};
 
 		/* Operations */
-		iterator		find(const key_type &k);
-		const_iterator	find(const key_type &k) const;
-		size_type		count(const key_type &k) const;
+		iterator		find(const key_type &k) {
+			iterator it = begin();
+			while (it != end())
+			{
+				if (it->first == k)
+					return (it);
+				it++;
+			}
+			return (it);
+		};
+		const_iterator	find(const key_type &k) const {
+			const_iterator it = begin();
+			while (it != end())
+			{
+				if (it->first == k)
+					return (it);
+				it++;
+			}
+			return (it);
+		};
+		size_type		count(const key_type &k) const {
+			iterator	it = begin();
+			size_type	n = 0;
+			while (it != end())
+			{
+				if (it->first == k)
+					n++;
+				it++;
+			}
+			return (n);
+		};
 		iterator		lower_bound(const key_type &k);
 		const_iterator	lower_bound(const key_type &k) const;
 		iterator		upper_bound(const key_type &k);
 		const_iterator	upper_bound(const key_type &k) const;
 		std::pair<const_iterator,const_iterator>	equal_range(const key_type &k) const;
 		std::pair<iterator,iterator>				equal_range(const key_type &k);
+
+		void	print()
+		{
+			printBT(_root);
+		}
+		void	printBT(node *x, int n = 0)
+		{
+			if (x == NULL)
+				return ;
+			n = n + 4;
+			printBT(x->right, n);
+			for (int i = 4; i < n; i++)
+				std::cout << " ";
+			if (x == _min)
+				std::cout << "MIN\n";
+			else if (x == _max)
+				std::cout << "MAX\n";
+			else
+				std::cout << x->data.first << "\n";
+			printBT(x->left, n);
+		}
 
 		private:
 		key_compare	_comp;
@@ -244,6 +393,8 @@ namespace ft
 			_set_min();
 			_set_max();
 			_size = 0;
+			// _min->data.first = "min";
+			// _max->data.first = "max";
 		};
 
 		void	_set_min() {

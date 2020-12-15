@@ -65,8 +65,7 @@ int main(void)
 	mp["al"] = 2;
 	mp["ab"] = 8;
 
-	std::cout << mp["ab"] << std::endl;
-	it = mp.begin();
+	std::cout << mp["ac"] << std::endl;
 
 	print_cap(mp);
 	print_content_iterator(mp);
