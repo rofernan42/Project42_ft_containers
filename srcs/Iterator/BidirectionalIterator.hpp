@@ -25,6 +25,82 @@ namespace ft
 		Elem	*prev;
 		T		data;
 		Elem	*next;
+
+		Elem	*nxt() {
+			return (this->next);
+		};
+		Elem	*pvs() {
+			return (this->prev);
+		};
+	};
+
+	template <class Pair, class Key>
+	struct nodeBT
+	{
+		Pair	data;
+		nodeBT	*parent;
+		nodeBT	*left;
+		nodeBT	*right;
+
+		nodeBT() {
+			parent = nullptr;
+			left = nullptr;
+			right = nullptr;
+		};
+
+		nodeBT	*search(nodeBT *root, Key key) {
+			if (root == NULL || root->data.first == key)
+				return (root);
+			if (root->data.first < key)
+				return (search(root->right, key));
+			return (search(root->left, key));
+		};
+		nodeBT	*insert(nodeBT *root, Pair value) {
+			if (!root) {
+				return (new nodeBT(root));
+			};
+			if (data.first > root->data.first)
+				root->right = insert(root->right, value);
+			else
+				root->left = insert(root->left, value);
+			return (root);
+		};
+		nodeBT	*nxt() {
+			nodeBT *tmp;
+			if (this->right)
+			{
+				tmp = this->right;
+				while (tmp->left)
+					tmp = tmp->left;
+			}
+			else
+			{
+				tmp = this;
+				while (tmp->parent && tmp == tmp->parent->right)
+					tmp = tmp->parent;
+				if (tmp->parent)
+					tmp = tmp->parent;
+			}
+			return (tmp);
+		};
+		nodeBT	*pvs() {
+			nodeBT *tmp;
+			if (this->left)
+			{
+				tmp = this->left;
+				while (tmp->right)
+					tmp = tmp->right;
+			}
+			else
+			{
+				tmp = this;
+				while (tmp->parent && tmp == tmp->parent->left)
+					tmp = tmp->parent;
+				if (tmp->parent)
+					tmp = tmp->parent;
+			}
+			return (tmp);
+		};
 	};
 
 	template <class T, class P>
@@ -57,13 +133,13 @@ namespace ft
 
 		bool	operator==(const iterator &x) const {
 			return (_ptr->data == x._ptr->data \
-			&& _ptr->prev == x._ptr->prev \
-			&& _ptr->next == x._ptr->next);
+			&& _ptr->pvs() == x._ptr->pvs() \
+			&& _ptr->nxt() == x._ptr->nxt());
 		};
 		bool	operator!=(const iterator &x) const {
 			return (!(_ptr->data == x._ptr->data \
-			&& _ptr->prev == x._ptr->prev \
-			&& _ptr->next == x._ptr->next));
+			&& _ptr->pvs() == x._ptr->pvs() \
+			&& _ptr->nxt() == x._ptr->nxt()));
 		};
 
 		reference	operator*() const {
@@ -74,8 +150,8 @@ namespace ft
 		};
 
 		iterator	&operator++() {
-			if (_ptr && _ptr->next)
-				_ptr = _ptr->next;
+			if (_ptr && _ptr->nxt())
+				_ptr = _ptr->nxt();
 			return (*this);
 		};
 		iterator	operator++(int) {
@@ -84,8 +160,8 @@ namespace ft
 			return (temp);
 		};
 		iterator	&operator--() {
-			if (_ptr && _ptr->prev)
-				_ptr = _ptr->prev;
+			if (_ptr && _ptr->pvs())
+				_ptr = _ptr->pvs();
 			return (*this);
 		};
 		iterator	operator--(int) {
@@ -128,13 +204,13 @@ namespace ft
 
 		bool	operator==(const iterator &x) const {
 			return (_ptr->data == x._ptr->data \
-			&& _ptr->prev == x._ptr->prev \
-			&& _ptr->next == x._ptr->next);
+			&& _ptr->pvs() == x._ptr->pvs() \
+			&& _ptr->nxt() == x._ptr->nxt());
 		};
 		bool	operator!=(const iterator &x) const {
 			return (!(_ptr->data == x._ptr->data \
-			&& _ptr->prev == x._ptr->prev \
-			&& _ptr->next == x._ptr->next));
+			&& _ptr->pvs() == x._ptr->pvs() \
+			&& _ptr->nxt() == x._ptr->nxt()));
 		};
 
 		reference	operator*() const {
@@ -145,8 +221,8 @@ namespace ft
 		};
 
 		iterator	&operator++() {
-			if (_ptr && _ptr->prev)
-				_ptr = _ptr->prev;
+			if (_ptr && _ptr->pvs())
+				_ptr = _ptr->pvs();
 			return (*this);
 		};
 		iterator	operator++(int) {
@@ -155,8 +231,8 @@ namespace ft
 			return (temp);
 		};
 		iterator	&operator--() {
-			if (_ptr && _ptr->next)
-				_ptr = _ptr->next;
+			if (_ptr && _ptr->nxt())
+				_ptr = _ptr->nxt();
 			return (*this);
 		};
 		iterator	operator--(int) {

@@ -15,6 +15,8 @@
 
 # include <limits>
 # include <memory>
+# include <cstddef>
+# include <string>
 # include "../Iterator/RandomAccessIterator.hpp"
 
 namespace ft

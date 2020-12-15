@@ -1,6 +1,5 @@
 #include <iostream>
 #include "List.hpp"
-// #include "List2.hpp"
 
 struct is_near {
 bool	operator() (int first, int second)
