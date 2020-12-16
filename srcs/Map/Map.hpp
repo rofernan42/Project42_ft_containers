@@ -180,7 +180,7 @@ namespace ft
 			return (std::make_pair(iterator(tmp), true));
 		};
 		iterator					insert(iterator position, const value_type &val) {
-
+			return (insert(val).first);
 		};
 		void						insert(iterator first, iterator last) {
 			while (first != last)
@@ -355,16 +355,56 @@ namespace ft
 			}
 			return (n);
 		};
-		iterator		lower_bound(const key_type &k);
-		const_iterator	lower_bound(const key_type &k) const;
-		iterator		upper_bound(const key_type &k);
-		const_iterator	upper_bound(const key_type &k) const;
-		std::pair<const_iterator,const_iterator>	equal_range(const key_type &k) const;
-		std::pair<iterator,iterator>				equal_range(const key_type &k);
+		iterator		lower_bound(const key_type &k) {
+			iterator it = begin();
+			while (it != end() && key_comp()(it->first, k))
+				it++;
+			return (it);
+		};
+		const_iterator	lower_bound(const key_type &k) const {
+			const_iterator it = begin();
+			while (it != end() && key_comp()(it->first, k))
+				it++;
+			return (it);
+		};
+		iterator		upper_bound(const key_type &k) {
+			iterator it = begin();
+			while (it != end())
+			{
+				if (key_comp()(k, it->first))
+					return (it);
+				it++;
+			}
+			return (it);
+		};
+		const_iterator	upper_bound(const key_type &k) const {
+			const_iterator it = begin();
+			while (it != end())
+			{
+				if (key_comp()(k, it->first))
+					return (it);
+				it++;
+			}
+			return (it);
+		};
+		std::pair<const_iterator, const_iterator>	equal_range(const key_type &k) const {
+			std::pair<const_iterator, const_iterator> ret;
+			ret.first = lower_bound(k);
+			ret.second = upper_bound(k);
+			return (ret);
+		};
+		std::pair<iterator, iterator>				equal_range(const key_type &k) {
+			std::pair<iterator, iterator> ret;
+			ret.first = lower_bound(k);
+			ret.second = upper_bound(k);
+			return (ret);
+		};
 
 		/* For tests purpose */
 		void	print() {
+			std::cout << "---------------------------\n";
 			_printBT(_root);
+			std::cout << "---------------------------\n";
 		}
 
 		private:
@@ -382,8 +422,6 @@ namespace ft
 			_set_min();
 			_set_max();
 			_size = 0;
-			// _min->data.first = "min";
-			// _max->data.first = "max";
 		};
 
 		void	_set_min() {
@@ -401,6 +439,7 @@ namespace ft
 			_max->parent = tmp;
 		};
 
+		/* For tests purpose */
 		void	_printBT(node *x, int n = 0) {
 			if (x == NULL)
 				return ;

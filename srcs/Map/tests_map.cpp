@@ -36,7 +36,7 @@ void	print_content_iterator(ft::map<S, T> mp)
 {
 	std::cout << "print content with iterarors:\n";
 	for (typename ft::map<S, T>::iterator it = mp.begin(); it != mp.end(); it++)
-		std::cout << it->first << " " << it->second << std::endl;
+		std::cout << it->first << " -> " << it->second << std::endl;
 	std::cout << std::endl;
 }
 
@@ -95,7 +95,7 @@ int main(void)
 	it++;
 	it++;
 	it = mp.end();
-	// it--;
+	it--;
 	mp.erase(it);
 	// mp = mp2;
 	
@@ -103,6 +103,43 @@ int main(void)
 
 	print_cap(mp);
 	print_content_iterator(mp);
+
+	ft::map<char,int> mymap;
+	ft::map<char,int>::iterator itlow,itup;
+
+	mymap['a']=20;
+	mymap['d']=80;
+	mymap['e']=100;
+	mymap['g']=100;
+	mymap['i']=100;
+	mymap['r']=100;
+	mymap['u']=100;
+
+	mymap.print();
+
+	itlow=mymap.lower_bound ('b');  // itlow points to b
+	itup=mymap.upper_bound ('s');   // itup points to e (not d!)	
+	mymap.erase(itlow,itup);        // erases [itlow,itup)
+
+	mymap.print();
+
+	// print_cap(mymap);
+	// print_content_iterator(mymap);
+
+	for (ft::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+		std::cout << it->first << " => " << it->second << '\n';
+
+	// ft::map<char,int> mymap2;
+
+	// mymap2['a']=10;
+	// mymap2['b']=20;
+	// mymap2['c']=30;
+	std::pair<ft::map<char,int>::iterator, ft::map<char,int>::iterator> ret;
+	ret = mymap.equal_range('b');
+	std::cout << "lower bound points to: ";
+	std::cout << ret.first->first << " => " << ret.first->second << '\n';	
+	std::cout << "upper bound points to: ";
+	std::cout << ret.second->first << " => " << ret.second->second << '\n';
 
     return (0);
 }
