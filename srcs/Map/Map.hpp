@@ -180,6 +180,7 @@ namespace ft
 			return (std::make_pair(iterator(tmp), true));
 		};
 		iterator					insert(iterator position, const value_type &val) {
+			(void)position;
 			return (insert(val).first);
 		};
 		void						insert(iterator first, iterator last) {
