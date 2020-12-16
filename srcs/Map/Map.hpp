@@ -68,7 +68,7 @@ namespace ft
 		map(const map &x) {
 			_comp = x._comp;
 			_init_map();
-			// if (!x.empty())
+			if (!x.empty())
 				insert(x.begin(), x.end());
 		};
 		~map() {
@@ -81,8 +81,8 @@ namespace ft
 			if (this != &x)
 			{
 				clear();
-				_init_map();
-				insert(x.begin(), x.end());
+				if (!x.empty())
+					insert(x.begin(), x.end());
 			}
 			return (*this);
 		};
@@ -196,12 +196,14 @@ namespace ft
 				first++;
 			}
 		};
-		void		erase(iterator position);
+		void		erase(iterator position) {
+			erase(position->first);
+		};
 		size_type	erase(const key_type &k) {
 			node		*tmp;
-			size_type	n = 0;
+			size_type	n = count(k);
 			if (!(tmp = _root->search(_root, k)))
-				return (n);
+				return (0);
 			if ((!tmp->left || tmp->left == _min) \
 			&& (!tmp->right || tmp->right == _max))
 			{
@@ -255,13 +257,16 @@ namespace ft
 				}
 				delete tmp;
 			}
-			else if ((tmp->left && tmp->left != _min) && (tmp->right && tmp->right != _max))
+			else if ((tmp->left && tmp->left != _min) \
+			&& (tmp->right && tmp->right != _max))
 			{
-				if (tmp !=_root)
-				{
-					tmp->data = tmp->nxt()->data;
-					
-				}
+				tmp->data = tmp->nxt()->data;
+				tmp = tmp->nxt();
+				if (value_comp()(tmp->data, tmp->parent->data))
+					tmp->parent->left = nullptr;
+				else
+					tmp->parent->right = nullptr;
+				delete tmp;
 			}
 			_size--;
 			_set_min();
@@ -340,8 +345,8 @@ namespace ft
 			return (it);
 		};
 		size_type		count(const key_type &k) const {
-			iterator	it = begin();
-			size_type	n = 0;
+			const_iterator	it = begin();
+			size_type		n = 0;
 			while (it != end())
 			{
 				if (it->first == k)
@@ -357,25 +362,9 @@ namespace ft
 		std::pair<const_iterator,const_iterator>	equal_range(const key_type &k) const;
 		std::pair<iterator,iterator>				equal_range(const key_type &k);
 
-		void	print()
-		{
-			printBT(_root);
-		}
-		void	printBT(node *x, int n = 0)
-		{
-			if (x == NULL)
-				return ;
-			n = n + 4;
-			printBT(x->right, n);
-			for (int i = 4; i < n; i++)
-				std::cout << " ";
-			if (x == _min)
-				std::cout << "MIN\n";
-			else if (x == _max)
-				std::cout << "MAX\n";
-			else
-				std::cout << x->data.first << "\n";
-			printBT(x->left, n);
+		/* For tests purpose */
+		void	print() {
+			_printBT(_root);
 		}
 
 		private:
@@ -411,6 +400,22 @@ namespace ft
 			tmp->right = _max;
 			_max->parent = tmp;
 		};
+
+		void	_printBT(node *x, int n = 0) {
+			if (x == NULL)
+				return ;
+			n = n + 4;
+			_printBT(x->right, n);
+			for (int i = 4; i < n; i++)
+				std::cout << " ";
+			if (x == _min)
+				std::cout << "MIN\n";
+			else if (x == _max)
+				std::cout << "MAX\n";
+			else
+				std::cout << x->data.first << "\n";
+			_printBT(x->left, n);
+		}
 	};
 };
 

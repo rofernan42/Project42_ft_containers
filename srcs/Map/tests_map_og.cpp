@@ -54,21 +54,54 @@ int main(void)
 	std::cout << "################# TESTS MY MAP #################" << std::endl;
 
 	std::map<std::string, int> mp;
+	// std::map<std::string, int>::iterator it = mp.begin();
+	// std::map<std::string, int>::iterator it2 = mp.begin();
+
+	print_cap(mp);
+	// print_content_iterator(mp);
+
+	// mp["aa"] = 4;
+	// mp["al"] = 2;
+	// mp["ab"] = 8;
+	std::cout << "********** MP INSERT **********" << std::endl;
+	mp.insert(std::make_pair("l", 10));
+	std::cout << mp["l"] << std::endl;
+	std::cout << mp["b"] << std::endl;
+	mp["a"] = 4;
+	mp["q"] = 2;
+	mp["i"] = 8;
+	mp["p"] = mp["a"];
+	mp["o"] = 15;
+
+	// mp.print();
+
+	print_cap(mp);
+	print_content_iterator(mp);
+
+	// mp.erase("q");
+	// mp.erase("b");
+	// mp.erase("a");
+	// mp.erase("i");
+	// std::cout << "erase: " << mp.erase("l") << std::endl;
+	// mp.erase(mp.begin());
+	// mp.erase(mp.begin(), mp.end());
+	// mp.erase("p");
+	// mp.erase("a");
+	// mp.erase("l");
+	// mp.erase("o");
+	// mp.clear();
 	std::map<std::string, int>::iterator it = mp.begin();
-	std::map<std::string, int>::iterator it2 = mp.begin();
-
-	print_cap(mp);
-	print_content_iterator(mp);
-
-	mp["bb"] = 10;
-	mp["aa"] = 4;
-	mp["al"] = 2;
-	mp["ab"] = 8;
-
-	std::cout << mp["ac"] << std::endl;
-
-	print_cap(mp);
-	print_content_iterator(mp);
+	it++;
+	it++;
+	it = mp.end();
+	// it--;
+	mp.erase(it);
+	// mp = mp2;
 	
+	// mp.print();
+
+	print_cap(mp);
+	print_content_iterator(mp);
+
     return (0);
 }

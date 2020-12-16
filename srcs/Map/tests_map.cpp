@@ -54,6 +54,7 @@ int main(void)
 	std::cout << "################# TESTS MY MAP #################" << std::endl;
 
 	ft::map<std::string, int> mp;
+	ft::map<std::string, int> mp2;
 	// ft::map<std::string, int>::iterator it = mp.begin();
 	// ft::map<std::string, int>::iterator it2 = mp.begin();
 
@@ -78,9 +79,26 @@ int main(void)
 	print_cap(mp);
 	print_content_iterator(mp);
 
-	mp.erase("a");
-	mp.erase("i");
-
+	// mp.erase("q");
+	// mp.erase("b");
+	// mp.erase("a");
+	// mp.erase("i");
+	// std::cout << "erase: " << mp.erase("l") << std::endl;
+	// mp.erase(mp.begin());
+	// mp.erase(mp.begin(), mp.end());
+	// mp.erase("p");
+	// mp.erase("a");
+	// mp.erase("l");
+	// mp.erase("o");
+	// mp.clear();
+	ft::map<std::string, int>::iterator it = mp.begin();
+	it++;
+	it++;
+	it = mp.end();
+	// it--;
+	mp.erase(it);
+	// mp = mp2;
+	
 	mp.print();
 
 	print_cap(mp);
