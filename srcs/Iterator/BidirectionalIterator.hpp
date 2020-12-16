@@ -55,16 +55,6 @@ namespace ft
 				return (search(root->right, key));
 			return (search(root->left, key));
 		};
-		nodeBT	*insert(nodeBT *root, Pair value) {
-			if (!root) {
-				return (new nodeBT(root));
-			};
-			if (data.first > root->data.first)
-				root->right = insert(root->right, value);
-			else
-				root->left = insert(root->left, value);
-			return (root);
-		};
 		nodeBT	*nxt() {
 			nodeBT *tmp;
 			if (this->right)
