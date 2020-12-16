@@ -117,29 +117,56 @@ int main(void)
 
 	mymap.print();
 
-	itlow=mymap.lower_bound ('b');  // itlow points to b
-	itup=mymap.upper_bound ('s');   // itup points to e (not d!)	
-	mymap.erase(itlow,itup);        // erases [itlow,itup)
+	itlow=mymap.lower_bound ('b');	// itlow points to b
+	itup=mymap.upper_bound ('s');	// itup points to e (not d!)	
+	mymap.erase(itlow,itup);		// erases [itlow,itup)
 
 	mymap.print();
 
-	// print_cap(mymap);
-	// print_content_iterator(mymap);
+	print_cap(mymap);
+	print_content_iterator(mymap);
 
-	for (ft::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
-		std::cout << it->first << " => " << it->second << '\n';
+	
 
-	// ft::map<char,int> mymap2;
+	ft::map<char,int> mymap2;
 
-	// mymap2['a']=10;
-	// mymap2['b']=20;
-	// mymap2['c']=30;
+	mymap2['a']=10;
+	mymap2['b']=20;
+	mymap2['c']=30;
 	std::pair<ft::map<char,int>::iterator, ft::map<char,int>::iterator> ret;
-	ret = mymap.equal_range('b');
+	ret = mymap2.equal_range('b');
 	std::cout << "lower bound points to: ";
 	std::cout << ret.first->first << " => " << ret.first->second << '\n';	
 	std::cout << "upper bound points to: ";
 	std::cout << ret.second->first << " => " << ret.second->second << '\n';
+
+	mymap.swap(mymap2);
+
+	std::cout << "MYMAP\n";
+	print_cap(mymap);
+	print_content_iterator(mymap);
+
+	std::cout << "MYMAP2\n";
+	print_cap(mymap2);
+	print_content_iterator(mymap2);
+
+
+
+	/* RELATIONAL OPERATORS */
+
+	std::cout << "\n\n\n******************** TESTS RELATIONAL OPERATORS ********************\n";
+
+	ft::map<char,int> foo,bar;
+	foo['a']=100;
+	foo['b']=200;
+	bar['a']=10;
+	bar['z']=1000;	
+	if (foo==bar) std::cout << "foo and bar are equal\n";
+	if (foo!=bar) std::cout << "foo and bar are not equal\n";
+	if (foo< bar) std::cout << "foo is less than bar\n";
+	if (foo> bar) std::cout << "foo is greater than bar\n";
+	if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+	if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";	
 
     return (0);
 }
