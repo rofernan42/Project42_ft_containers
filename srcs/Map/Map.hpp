@@ -13,6 +13,7 @@
 #ifndef MAP_HPP
 # define MAP_HPP
 
+# include <iostream>
 # include <limits>
 # include <memory>
 # include <utility>
@@ -59,11 +60,16 @@ namespace ft
 		};
 
 		/* Member functions */
-		map(const key_compare &comp = key_compare(), const allocator_type& alloc = allocator_type()) {
+		map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) {
+			(void)alloc;
 			_comp = comp;
 			_init_map();
 		};
 		map(iterator first, iterator last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) {
+			(void)alloc;
+			_comp = comp;
+			_init_map();
+			insert(first, last);
 		};
 		map(const map &x) {
 			_comp = x._comp;
@@ -81,6 +87,7 @@ namespace ft
 			if (this != &x)
 			{
 				clear();
+				_comp = x._comp;
 				if (!x.empty())
 					insert(x.begin(), x.end());
 			}
