@@ -23,15 +23,6 @@ void	print_cap(ft::map<S, T> mp)
 }
 
 template <class S, class T>
-void	print_content(ft::map<S, T> mp)
-{
-	std::cout << "print content with operator[]:\n";
-	for (size_t i = 0; i < mp.size(); i++)
-		std::cout << "vec[" << i << "]: " << mp[i] << std::endl;
-	std::cout << std::endl;
-}
-
-template <class S, class T>
 void	print_content_iterator(ft::map<S, T> mp)
 {
 	std::cout << "print content with iterarors:\n";
@@ -55,29 +46,72 @@ int main(void)
 
 	ft::map<std::string, int> mp;
 	ft::map<std::string, int> mp2;
-	// ft::map<std::string, int>::iterator it = mp.begin();
-	// ft::map<std::string, int>::iterator it2 = mp.begin();
+	ft::map<std::string, int> mp3;
 
+	std::cout << "********** MP EMPTY **********" << std::endl;
+	mp.print();
 	print_cap(mp);
-	// print_content_iterator(mp);
+	print_content_iterator(mp);
 
-	// mp["aa"] = 4;
-	// mp["al"] = 2;
-	// mp["ab"] = 8;
+	std::cout << "********** MP2 EMPTY **********" << std::endl;
+	mp.print();
+	print_cap(mp);
+	print_content_iterator(mp);
+
 	std::cout << "********** MP INSERT **********" << std::endl;
-	mp.insert(std::make_pair("l", 10));
-	std::cout << mp["l"] << std::endl;
+	std::pair<ft::map<std::string, int>::iterator, bool> ret = mp.insert(std::make_pair("l", 10));
+	std::cout << "return insert: " << ret.first->first << " -> " << ret.first->second << " - bool: " << ret.second << std::endl;
+
+	std::cout << "********** MP[] NOT EXISTING **********" << std::endl;
 	std::cout << mp["b"] << std::endl;
 	mp["a"] = 4;
 	mp["q"] = 2;
 	mp["i"] = 8;
 	mp["p"] = mp["a"];
 	mp["o"] = 15;
+	std::cout << "mp[\"a\"]: " << mp["a"] << std::endl;
+	std::cout << "mp[\"q\"]: " << mp["q"] << std::endl;
+	std::cout << "mp[\"o\"]: " << mp["o"] << std::endl;
 
 	mp.print();
-
 	print_cap(mp);
 	print_content_iterator(mp);
+
+	std::cout << "********** MP INSERT EXISTING ELEMENT **********" << std::endl;
+	ret = mp.insert(std::make_pair("i", 10));
+	std::cout << "return insert: " << ret.first->first << " -> " << ret.first->second << " - bool: " << ret.second << std::endl;
+	
+	mp.print();
+	print_cap(mp);
+	print_content_iterator(mp);
+
+	std::cout << "********** OPERATOR = FROM EXISTING TO EMPTY ; MP2 = MP **********" << std::endl;
+	mp2 = mp;
+	mp2.print();
+	print_cap(mp2);
+	print_content_iterator(mp2);
+
+	std::cout << "********** OPERATOR = FROM EMPTY TO EXISTING ; MP2 = MP3 **********" << std::endl;
+	mp2 = mp3;
+	mp2.print();
+	print_cap(mp2);
+	print_content_iterator(mp2);
+
+	std::cout << "********** ERASE MP BEGIN **********" << std::endl;
+	mp.erase(mp.begin());
+	mp.print();
+	print_cap(mp);
+	print_content_iterator(mp);
+
+	std::cout << "********** ERASE MP END - 1 **********" << std::endl;
+	ft::map<std::string, int>::iterator it = mp.end();
+	it--; // erase mp.end() is segfault
+	mp.erase(it);
+	mp.print();
+	print_cap(mp);
+	print_content_iterator(mp);
+
+
 
 	// mp.erase("q");
 	// mp.erase("b");
@@ -91,13 +125,13 @@ int main(void)
 	// mp.erase("l");
 	// mp.erase("o");
 	// mp.clear();
-	ft::map<std::string, int>::iterator it = mp.begin();
-	it++;
-	it++;
-	it = mp.end();
-	it--;
-	mp.erase(it);
-	// mp = mp2;
+	// ft::map<std::string, int>::iterator it = mp.begin();
+	// it++;
+	// it++;
+	// it = mp.end();
+	// it--;
+	// mp.erase(it);
+	// // mp = mp2;
 	
 	mp.print();
 
@@ -133,12 +167,12 @@ int main(void)
 	mymap2['a']=10;
 	mymap2['b']=20;
 	mymap2['c']=30;
-	std::pair<ft::map<char,int>::iterator, ft::map<char,int>::iterator> ret;
-	ret = mymap2.equal_range('b');
+	std::pair<ft::map<char,int>::iterator, ft::map<char,int>::iterator> ret2;
+	ret2 = mymap2.equal_range('b');
 	std::cout << "lower bound points to: ";
-	std::cout << ret.first->first << " => " << ret.first->second << '\n';	
+	std::cout << ret2.first->first << " => " << ret2.first->second << '\n';	
 	std::cout << "upper bound points to: ";
-	std::cout << ret.second->first << " => " << ret.second->second << '\n';
+	std::cout << ret2.second->first << " => " << ret2.second->second << '\n';
 
 	mymap.swap(mymap2);
 

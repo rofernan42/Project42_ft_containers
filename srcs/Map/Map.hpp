@@ -148,7 +148,7 @@ namespace ft
 				return (std::make_pair(iterator(_root), true));
 			}
 			node *tmp = _root;
-			while (tmp->left || tmp->right)
+			while (tmp)
 			{
 				if (tmp->data.first == val.first)
 					return (std::make_pair(iterator(tmp), false));

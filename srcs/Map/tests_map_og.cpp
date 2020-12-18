@@ -54,30 +54,61 @@ int main(void)
 	std::cout << "################# TESTS ORIGINAL MAP #################" << std::endl;
 
 	std::map<std::string, int> mp;
-	// std::map<std::string, int>::iterator it = mp.begin();
-	// std::map<std::string, int>::iterator it2 = mp.begin();
+	std::map<std::string, int> mp2;
+	std::map<std::string, int> mp3;
 
+	std::cout << "********** MP EMPTY **********" << std::endl;
+	// mp.print();
 	print_cap(mp);
-	// print_content_iterator(mp);
+	print_content_iterator(mp);
 
-	// mp["aa"] = 4;
-	// mp["al"] = 2;
-	// mp["ab"] = 8;
+	std::cout << "********** MP2 EMPTY **********" << std::endl;
+	// mp.print();
+	print_cap(mp);
+	print_content_iterator(mp);
+
 	std::cout << "********** MP INSERT **********" << std::endl;
-	mp.insert(std::make_pair("l", 10));
-	std::cout << mp["l"] << std::endl;
+	std::pair<std::map<std::string, int>::iterator, bool> ret = mp.insert(std::make_pair("l", 10));
+	std::cout << "return insert: " << ret.first->first << " -> " << ret.first->second << " - bool: " << ret.second << std::endl;
+
+	std::cout << "********** MP[] NOT EXISTING **********" << std::endl;
 	std::cout << mp["b"] << std::endl;
 	mp["a"] = 4;
 	mp["q"] = 2;
 	mp["i"] = 8;
 	mp["p"] = mp["a"];
 	mp["o"] = 15;
-	std::cout << "insert: " << mp.insert(mp.begin(), std::make_pair("m", 100))->first << std::endl;;
+	std::cout << "mp[\"a\"]: " << mp["a"] << std::endl;
+	std::cout << "mp[\"q\"]: " << mp["q"] << std::endl;
+	std::cout << "mp[\"o\"]: " << mp["o"] << std::endl;
 
 	// mp.print();
-
 	print_cap(mp);
 	print_content_iterator(mp);
+
+	std::cout << "********** MP INSERT EXISTING ELEMENT **********" << std::endl;
+	ret = mp.insert(std::make_pair("i", 10));
+	std::cout << "return insert: " << ret.first->first << " -> " << ret.first->second << " - bool: " << ret.second << std::endl;
+	
+	// mp.print();
+	print_cap(mp);
+	print_content_iterator(mp);
+
+	std::cout << "********** OPERATOR = FROM EXISTING TO EMPTY ; MP2 = MP **********" << std::endl;
+	mp2 = mp;
+	// mp2.print();
+	print_cap(mp2);
+	print_content_iterator(mp2);
+
+	std::cout << "********** OPERATOR = FROM EMPTY TO EXISTING ; MP2 = MP3 **********" << std::endl;
+	mp2 = mp3;
+
+	// mp2.print();
+	print_cap(mp2);
+	print_content_iterator(mp2);
+
+
+
 
 	// mp.erase("q");
 	// mp.erase("b");
@@ -104,37 +135,37 @@ int main(void)
 	// print_cap(mp);
 	// print_content_iterator(mp);
 
-	std::map<char,int> mymap;
-	std::map<char,int>::iterator itlow,itup;
+	// std::map<char,int> mymap;
+	// std::map<char,int>::iterator itlow,itup;
 
-	mymap['a']=20;
-	mymap['d']=80;
-	mymap['e']=100;
-	mymap['g']=100;
-	mymap['i']=100;
-	mymap['r']=100;
-	mymap['u']=100;
+	// mymap['a']=20;
+	// mymap['d']=80;
+	// mymap['e']=100;
+	// mymap['g']=100;
+	// mymap['i']=100;
+	// mymap['r']=100;
+	// mymap['u']=100;
 
 
-	itlow=mymap.lower_bound ('b');  // itlow points to b
-	itup=mymap.upper_bound ('s');   // itup points to e (not d!)	
-	print_content_iterator(mymap);
-	mymap.erase(itlow,itup);        // erases [itlow,itup)
-
-	mymap.swap(mp);
-	// print_cap(mymap);
+	// itlow=mymap.lower_bound ('b');  // itlow points to b
+	// itup=mymap.upper_bound ('s');   // itup points to e (not d!)	
 	// print_content_iterator(mymap);
+	// mymap.erase(itlow,itup);        // erases [itlow,itup)
 
-	for (std::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
-		std::cout << it->first << " => " << it->second << '\n';
+	// mymap.swap(mp);
+	// // print_cap(mymap);
+	// // print_content_iterator(mymap);
+
+	// for (std::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+	// 	std::cout << it->first << " => " << it->second << '\n';
 
 
-	// std::pair<std::map<char,int>::iterator, std::map<char,int>::iterator> ret;
-	// ret = mymap.equal_range('b');
-	// std::cout << "lower bound points to: ";
-	// std::cout << ret.first->first << " => " << ret.first->second << '\n';	
-	// std::cout << "upper bound points to: ";
-	// std::cout << ret.second->first << " => " << ret.second->second << '\n';
+	// // std::pair<std::map<char,int>::iterator, std::map<char,int>::iterator> ret;
+	// // ret = mymap.equal_range('b');
+	// // std::cout << "lower bound points to: ";
+	// // std::cout << ret.first->first << " => " << ret.first->second << '\n';	
+	// // std::cout << "upper bound points to: ";
+	// // std::cout << ret.second->first << " => " << ret.second->second << '\n';
 
     return (0);
 }
