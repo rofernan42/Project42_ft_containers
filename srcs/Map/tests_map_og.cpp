@@ -23,20 +23,11 @@ void	print_cap(std::map<S, T> mp)
 }
 
 template <class S, class T>
-void	print_content(std::map<S, T> mp)
-{
-	std::cout << "print content with operator[]:\n";
-	for (S i = 0; i < mp.size(); i++)
-		std::cout << "vec[" << i << "]: " << mp[i] << std::endl;
-	std::cout << std::endl;
-}
-
-template <class S, class T>
 void	print_content_iterator(std::map<S, T> mp)
 {
 	std::cout << "print content with iterarors:\n";
 	for (typename std::map<S, T>::iterator it = mp.begin(); it != mp.end(); it++)
-		std::cout << it->first << " " << it->second << std::endl;
+		std::cout << it->first << " -> " << it->second << std::endl;
 	std::cout << std::endl;
 }
 
@@ -45,7 +36,7 @@ void	print_reverse_iterator(std::map<S, T> mp)
 {
 	std::cout << "print content with reverse iterarors:\n";
 	for (typename std::map<S, T>::reverse_iterator it = mp.rbegin(); it != mp.rend(); it++)
-		std::cout << "*it:\t" << *it << std::endl;
+		std::cout << it->first << " -> " << it->second << std::endl;
 	std::cout << std::endl;
 }
 
@@ -85,6 +76,7 @@ int main(void)
 	// mp.print();
 	print_cap(mp);
 	print_content_iterator(mp);
+	print_reverse_iterator(mp);
 
 	std::cout << "********** MP INSERT EXISTING ELEMENT **********" << std::endl;
 	ret = mp.insert(std::make_pair("i", 10));
@@ -102,70 +94,119 @@ int main(void)
 
 	std::cout << "********** OPERATOR = FROM EMPTY TO EXISTING ; MP2 = MP3 **********" << std::endl;
 	mp2 = mp3;
-
 	// mp2.print();
 	print_cap(mp2);
 	print_content_iterator(mp2);
+	print_reverse_iterator(mp2);
 
+	mp2 = mp;
 
+	std::cout << "********** ERASE MP BEGIN **********" << std::endl;
+	mp.erase(mp.begin());
+	// mp.print();
+	print_cap(mp);
+	print_content_iterator(mp);
 
+	std::cout << "********** ERASE MP END - 1 **********" << std::endl;
+	std::map<std::string, int>::iterator it = mp.end();
+	it--; // erase mp.end() is segfault
+	mp.erase(it);
+	// mp.print();
+	print_cap(mp);
+	print_content_iterator(mp);
 
-	// mp.erase("q");
-	// mp.erase("b");
-	// mp.erase("a");
-	// mp.erase("i");
-	// std::cout << "erase: " << mp.erase("l") << std::endl;
-	// mp.erase(mp.begin());
-	// mp.erase(mp.begin(), mp.end());
-	// mp.erase("p");
-	// mp.erase("a");
-	// mp.erase("l");
-	// mp.erase("o");
-	// mp.clear();
-	// std::map<std::string, int>::iterator it = mp.begin();
-	// it++;
-	// it++;
-	// it = mp.end();
-	// it--;
-	// mp.erase(it);
-	// // mp = mp2;
-	
-	// // mp.print();
+	std::cout << "********** ERASE MP ELEMENT WITH ITERATOR **********" << std::endl;
+	it = mp.begin();
+	it++;
+	it++;
+	mp.erase(it);
+	// mp.print();
+	print_cap(mp);
+	print_content_iterator(mp);
 
-	// print_cap(mp);
-	// print_content_iterator(mp);
+	std::cout << "********** ERASE MP ELEMENTS 1 BY 1 **********" << std::endl;
+	mp.erase("p");
+	mp.erase("l");
+	mp.erase("b");
+	mp.erase("i");
+	mp.erase("i");
+	mp.erase("o");
+	// mp.print();
+	print_cap(mp);
+	print_content_iterator(mp);
 
-	// std::map<char,int> mymap;
-	// std::map<char,int>::iterator itlow,itup;
+	std::cout << "********** INSERT MP FROM MP2 BEGIN TO END **********" << std::endl;
+	mp.insert(mp2.begin(), mp2.end());
+	// mp.print();
+	print_cap(mp);
+	print_content_iterator(mp);
 
-	// mymap['a']=20;
-	// mymap['d']=80;
-	// mymap['e']=100;
-	// mymap['g']=100;
-	// mymap['i']=100;
-	// mymap['r']=100;
-	// mymap['u']=100;
+	std::cout << "********** MP CLEAR **********" << std::endl;
+	mp.clear();
+	// mp.print();
+	print_cap(mp);
+	print_content_iterator(mp);
 
+	std::cout << "********** LOWER & UPPER BOUND **********" << std::endl;
+	std::map<char,int> mymap;
+	std::map<char,int>::iterator itlow,itup;
+	mymap['a']=20;
+	mymap['d']=80;
+	mymap['e']=100;
+	mymap['g']=111234;
+	mymap['i']=67;
+	mymap['r']=87;
+	mymap['u']=32;
 
-	// itlow=mymap.lower_bound ('b');  // itlow points to b
-	// itup=mymap.upper_bound ('s');   // itup points to e (not d!)	
-	// print_content_iterator(mymap);
-	// mymap.erase(itlow,itup);        // erases [itlow,itup)
+	// mymap.print();
+	itlow=mymap.lower_bound ('b');
+	itup=mymap.upper_bound ('s');
+	mymap.erase(itlow,itup);
+	// mymap.print();
+	print_cap(mymap);
+	print_content_iterator(mymap);
 
-	// mymap.swap(mp);
-	// // print_cap(mymap);
-	// // print_content_iterator(mymap);
+	std::cout << "********** EQUAL RANGE **********" << std::endl;
+	std::map<char,int> mymap2;
+	mymap2['a']=10;
+	mymap2['b']=20;
+	mymap2['c']=30;
+	std::pair<std::map<char,int>::iterator, std::map<char,int>::iterator> ret2;
+	ret2 = mymap2.equal_range('b');
+	std::cout << "lower bound points to: ";
+	std::cout << ret2.first->first << " => " << ret2.first->second << '\n';	
+	std::cout << "upper bound points to: ";
+	std::cout << ret2.second->first << " => " << ret2.second->second << '\n';
 
-	// for (std::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
-	// 	std::cout << it->first << " => " << it->second << '\n';
+	std::cout << "********** BEFORE SWAP **********" << std::endl;
+	std::cout << "MYMAP\n";
+	print_content_iterator(mymap);
+	std::cout << "MYMAP2\n";
+	print_content_iterator(mymap2);
 
+	std::cout << "********** AFTER SWAP **********" << std::endl;
+	mymap.swap(mymap2);
 
-	// // std::pair<std::map<char,int>::iterator, std::map<char,int>::iterator> ret;
-	// // ret = mymap.equal_range('b');
-	// // std::cout << "lower bound points to: ";
-	// // std::cout << ret.first->first << " => " << ret.first->second << '\n';	
-	// // std::cout << "upper bound points to: ";
-	// // std::cout << ret.second->first << " => " << ret.second->second << '\n';
+	std::cout << "MYMAP\n";
+	print_content_iterator(mymap);
+	std::cout << "MYMAP2\n";
+	print_content_iterator(mymap2);
+
+	/* RELATIONAL OPERATORS */
+
+	std::cout << "\n\n\n******************** TESTS RELATIONAL OPERATORS ********************\n";
+
+	std::map<char,int> foo,bar;
+	foo['a']=100;
+	foo['b']=200;
+	bar['a']=10;
+	bar['z']=1000;	
+	if (foo==bar) std::cout << "foo and bar are equal\n";
+	if (foo!=bar) std::cout << "foo and bar are not equal\n";
+	if (foo< bar) std::cout << "foo is less than bar\n";
+	if (foo> bar) std::cout << "foo is greater than bar\n";
+	if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+	if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";	
 
     return (0);
 }

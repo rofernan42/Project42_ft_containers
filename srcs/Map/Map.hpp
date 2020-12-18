@@ -102,9 +102,13 @@ namespace ft
 			return (_min->parent);
 		};
 		iterator				end() {
+			if (_size == 0)
+				return (_root);
 			return (_max);
 		};
 		const_iterator			end() const {
+			if (_size == 0)
+				return (_root);
 			return (_max);
 		};
 		reverse_iterator		rbegin() {
@@ -114,9 +118,13 @@ namespace ft
 			return (_max->parent);
 		};
 		reverse_iterator		rend() {
+			if (_size == 0)
+				return (_root);
 			return (_min);
 		};
 		const_reverse_iterator	rend() const {
+			if (_size == 0)
+				return (_root);
 			return (_min);
 		};
 
@@ -128,7 +136,7 @@ namespace ft
 			return (_size);
 		};
 		size_type	max_size() const {
-			return (std::numeric_limits<size_type>::max() / sizeof(value_type));
+			return (std::numeric_limits<size_type>::max() / (sizeof(node) + sizeof(pointer)));
 		};
 
 		/* Element access */
