@@ -194,7 +194,7 @@ int main(void)
 	it = lst4.begin();
 	for (int i = 0; i < 4; i++)
 		it++;
-	lst4.insert(it, 5, 80);
+	lst4.insert(it, (size_t)5, 80);
 	print_cap(lst4);
 	print_content(lst4);
 
@@ -362,7 +362,7 @@ int main(void)
 	print_content(lst2);
 
 	std::cout << "********** LST2 ASSIGN(6, 111) **********\n";
-	lst2.assign(6, 111);
+	lst2.assign((size_t)6, 111);
 	print_cap(lst2);
 	print_content(lst2);
 
@@ -377,7 +377,7 @@ int main(void)
 	print_content(lst);
 
 	std::cout << "********** LST2 ASSIGN(3, 222) **********\n";
-	lst2.assign(3, 222);
+	lst2.assign((size_t)3, 222);
 	print_cap(lst2);
 	print_content(lst2);
 
@@ -415,7 +415,7 @@ int main(void)
 	print_content(lst2);
 
 	std::cout << "********** LST2 ASSIGN (5, 999) **********\n";
-	lst2.assign(5, 999);
+	lst2.assign((size_t)5, 999);
 	print_cap(lst2);
 	print_content(lst2);
 
@@ -459,8 +459,8 @@ int main(void)
 
 	std::cout << "\n\n\n******************** TESTS RELATIONAL OPERATORS ********************\n";
 
-	ft::list<int> foo (3,100);
-	ft::list<int> bar (2,200);
+	ft::list<int> foo ((size_t)3,100);
+	ft::list<int> bar ((size_t)2,200);
 
 	if (foo == bar) std::cout << "foo and bar are equal\n";
 	if (foo != bar) std::cout << "foo and bar are not equal\n";
