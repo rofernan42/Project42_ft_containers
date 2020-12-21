@@ -214,6 +214,11 @@ namespace ft
 			_size--;
 		};
 		iterator	insert(iterator position, const value_type &val) {
+			if (position == begin())
+			{
+				push_front(val);
+				return (begin());
+			}
 			Elem<value_type>	*tmp = new Elem<value_type>;
 			iterator			it = begin();
 			_ptr = _start;
@@ -227,8 +232,6 @@ namespace ft
 			tmp->next = _ptr;
 			tmp->prev->next = tmp;
 			_ptr->prev = tmp;
-			if (position == begin())
-				_start = tmp;
 			if (position == end())
 				_end = tmp;
 			_size++;
