@@ -14,7 +14,7 @@
 #include <vector>
 
 template <class T>
-void	print_cap(std::vector<T> vec)
+void	print_cap(std::vector<T> &vec)
 {
 	std::cout << "vec.size():\t" << vec.size() << std::endl;
 	std::cout << "vec.max_size():\t" << vec.max_size() << std::endl;
@@ -75,6 +75,8 @@ int main(void)
 
 	std::cout << "********** VEC **********\n";
 	print_cap(vec);
+	vec.insert(vec.begin(), 4);
+	print_content(vec);
 
 	std::cout << "********** VEC2 **********\n";
 	print_cap(vec2);
@@ -85,6 +87,10 @@ int main(void)
 	vec.push_back(4);
 	vec.push_back(10);
 	vec.push_back(15);
+	vec.push_back(7);
+	vec.push_back(1);
+	vec.push_back(2);
+	vec.push_back(90);
 
 	print_cap(vec);
 	print_content(vec);
@@ -110,7 +116,7 @@ int main(void)
 	print_access(vec);
 
 	std::cout << "********** TEST INSERT 2 VEC **********\n";
-	vec.insert(vec.begin() + 3, 5, 5555);
+	vec.insert(vec.begin() + 3, 7, 5555);
 	print_cap(vec);
 	print_content(vec);
 	print_access(vec);
@@ -135,7 +141,7 @@ int main(void)
 	print_access(vec3);
 
 	std::cout << "********** TEST RESIZE n > cap VEC3 **********\n";
-	vec3.resize(17, 1111);
+	vec3.resize(19, 1111);
 	print_cap(vec3);
 	print_content(vec3);
 	print_access(vec3);
@@ -165,6 +171,7 @@ int main(void)
 
 	std::cout << "********** VEC5 = VEC3 **********\n";
 	vec5 = vec3;
+	print_cap(vec5);
 	print_content(vec5);
 
 	std::cout << "********** VEC5 = VEC **********\n";

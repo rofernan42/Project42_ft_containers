@@ -63,21 +63,20 @@ namespace ft
 			_vec = nullptr;
 			_size = 0;
 			_cap = 0;
-			reserve(x._cap);
+			reserve(x._size);
 			assign(x.begin(), x.end());
 		};
 		~vector() {
-			if (_vec)
-				clear();
+			if (_cap > 0)
+				_alloc.deallocate(_vec, _cap);
 		};
 		vector	&operator=(const vector &x) {
 			if (this != &x)
 			{
-				_alloc.deallocate(_vec, _cap);
-				_vec = nullptr;
 				_size = 0;
-				_cap = 0;
-				reserve(x._cap);
+				if (_cap < x._size)
+					_alloc.deallocate(_vec, _cap);
+				reserve(x._size);
 				assign(x.begin(), x.end());
 			}
 			return (*this);
@@ -118,16 +117,7 @@ namespace ft
 		};
 		void		resize(size_type n, value_type val = value_type()) {
 			if (n < _size)
-			{
-				value_type *tmp;
-				tmp = _alloc.allocate(n);
-				for (size_t i = 0; i < n; i++)
-					_alloc.construct(&tmp[i], _vec[i]);
-				clear();
-				_vec = tmp;
 				_size = n;
-				_cap = n;
-			}
 			else if (n > _size)
 			{
 				reserve(n);
@@ -218,8 +208,10 @@ namespace ft
 				push_back(val);
 		};
 		void		push_back(const value_type &val) {
-			if (_vec == nullptr || _cap <= _size + 1)
-				reserve(_size + 1);
+			if (_cap == 0)
+				reserve(1);
+			if (_vec == nullptr || _cap <= _size)
+				reserve(_cap * 2);
 			_alloc.construct(&_vec[_size], val);
 			_size++;
 		};
@@ -229,7 +221,9 @@ namespace ft
 		iterator	insert(iterator position, const value_type &val) {
 			difference_type pos = position - begin();
 
-			if (_cap <= _size + 1)
+			if (_cap < _size + 1  && _size * 2 >= _size + 1)
+				reserve(_size * 2);
+			else if (_cap < _size + 1  && _size * 2 < _size + 1)
 				reserve(_size + 1);
 			_size++;
 			for (size_t i = _size - 1; i > (size_t)pos; i--)
@@ -240,7 +234,9 @@ namespace ft
 		void		insert(iterator position, size_type n, const value_type &val) {
 			difference_type pos = position - begin();
 
-			if (_cap <= _size + n)
+			if (_cap < _size + n && _size * 2 >= _size + n)
+				reserve(_size * 2);
+			else if (_cap < _size + n && _size * 2 < _size + n)
 				reserve(_size + n);
 			for (size_t i = 0; i < n; i++)
 				insert(begin() + pos, val);
@@ -249,7 +245,9 @@ namespace ft
 			difference_type range = last - first;
 			difference_type pos = position - begin();
 
-			if (_cap <= _size + range)
+			if (_cap < _size + range && _size * 2 >= _size + range)
+				reserve(_size * 2);
+			else if (_cap < _size + range && _size * 2 < _size + range)
 				reserve(_size + range);
 			while (first != last)
 			{
@@ -262,7 +260,7 @@ namespace ft
 			for (iterator it = position; it != end() - 1; it++)
 				*it = *(it + 1);
 			_size--;
-			_cap = _size;
+			_alloc.destroy(&_vec[_size]);
 			return (position);
 		};
 		iterator	erase(iterator first, iterator last) {
@@ -270,7 +268,8 @@ namespace ft
 			for (iterator it = first; it != end() - range; it++)
 				*it = *(it + range);
 			_size -= range;
-			_cap = _size;
+			for (difference_type i = 0; i < range; i++)
+				_alloc.destroy(&_vec[_size + i]);
 			return (first);
 		};
 		void		swap(vector &x) {
@@ -289,10 +288,7 @@ namespace ft
 			_cap = tmpcap;
 		};
 		void		clear() {
-			_alloc.deallocate(_vec, _cap);
-			_vec = nullptr;
 			_size = 0;
-			_cap = 0;
 		};
 
 		private:
