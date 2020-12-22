@@ -18,7 +18,7 @@
 
 namespace ft
 {
-	template <class T, class Container = list<T>>
+	template < class T, class Container = list<T> >
 	class queue
 	{
         public:
