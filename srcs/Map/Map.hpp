@@ -35,11 +35,11 @@ namespace ft
 		typedef const value_type &const_reference;
 		typedef value_type *pointer;
 		typedef const value_type *const_pointer;
-		typedef nodeBT<std::pair<Key, T>, Key> node;
-		typedef BidirectionalIterator<std::pair<Key, T>, node*> iterator;
-		typedef BidirectionalIterator<const std::pair<Key, T>, node*> const_iterator;
-		typedef ReverseBidirectional<std::pair<Key, T>, node*> reverse_iterator;
-		typedef ReverseBidirectional<const std::pair<Key, T>, node*> const_reverse_iterator;
+		typedef nodeBT<value_type, Key> node;
+		typedef BidirectionalIterator<value_type, node*> iterator;
+		typedef BidirectionalIterator<const value_type, node*> const_iterator;
+		typedef ReverseBidirectional<value_type, node*> reverse_iterator;
+		typedef ReverseBidirectional<const value_type, node*> const_reverse_iterator;
 		typedef ptrdiff_t difference_type;
 		typedef size_t size_type;
 		class value_compare
@@ -55,23 +55,25 @@ namespace ft
 			typedef value_type first_argument_type;
 			typedef value_type second_argument_type;
 			bool	operator()(const value_type &x, const value_type &y) const {
-				return comp(x.first, y.first);
+				return (comp(x.first, y.first));
 			};
 		};
 
 		/* Member functions */
 		map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) {
-			(void)alloc;
+			_alloc = alloc;
 			_comp = comp;
 			_init_map();
 		};
-		map(iterator first, iterator last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) {
-			(void)alloc;
+		template <class InputIterator>
+		map(InputIterator first, InputIterator last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) {
+			_alloc = alloc;
 			_comp = comp;
 			_init_map();
 			insert(first, last);
 		};
 		map(const map &x) {
+			_alloc = x._alloc;
 			_comp = x._comp;
 			_init_map();
 			if (!x.empty())
@@ -79,6 +81,9 @@ namespace ft
 		};
 		~map() {
 			clear();
+			_alloc.deallocate(_min->data, 1);
+			_alloc.deallocate(_max->data, 1);
+			_alloc.deallocate(_root->data, 1);
 			delete _min;
 			delete _max;
 			delete _root;
@@ -86,6 +91,7 @@ namespace ft
 		map &operator=(const map &x) {
 			if (this != &x)
 			{
+				_alloc = x._alloc;
 				clear();
 				_comp = x._comp;
 				if (!x.empty())
@@ -137,6 +143,7 @@ namespace ft
 		};
 		size_type	max_size() const {
 			return (std::numeric_limits<size_type>::max() / (sizeof(node) + sizeof(pointer)));
+			// return (std::numeric_limits<size_type>::max() / (sizeof(value_type)));
 		};
 
 		/* Element access */
@@ -151,16 +158,16 @@ namespace ft
 		std::pair<iterator, bool>	insert(const value_type &val) {
 			if (empty())
 			{
-				_root->data = val;
+				_alloc.construct(_root->data, val);
 				_size++;
 				return (std::make_pair(iterator(_root), true));
 			}
 			node *tmp = _root;
 			while (tmp)
 			{
-				if (tmp->data.first == val.first)
+				if (tmp->data->first == val.first)
 					return (std::make_pair(iterator(tmp), false));
-				if (value_comp()(tmp->data, val))
+				if (value_comp()(*tmp->data, val))
 				{
 					if (tmp->right && tmp->right != _max)
 						tmp = tmp->right;
@@ -175,18 +182,20 @@ namespace ft
 						break ;
 				}
 			}
-			if (value_comp()(tmp->data, val))
+			if (value_comp()(*tmp->data, val))
 			{
 				tmp->right = new node();
+				tmp->right->data = _alloc.allocate(1);
 				tmp->right->parent = tmp;
-				tmp->right->data = val;
+				_alloc.construct(tmp->right->data, val);
 				tmp = tmp->right;
 			}
 			else
 			{
 				tmp->left = new node();
+				tmp->left->data = _alloc.allocate(1);
 				tmp->left->parent = tmp;
-				tmp->left->data = val;
+				_alloc.construct(tmp->left->data, val);
 				tmp = tmp->left;
 			}
 			_set_min();
@@ -198,20 +207,15 @@ namespace ft
 			(void)position;
 			return (insert(val).first);
 		};
-		void						insert(iterator first, iterator last) {
+		template <class InputIterator>
+		void						insert(InputIterator first, InputIterator last) {
 			while (first != last)
 			{
 				insert(*first);
 				first++;
 			}
 		};
-		void						insert(const_iterator first, const_iterator last) {
-			while (first != last)
-			{
-				insert(*first);
-				first++;
-			}
-		};
+
 		void		erase(iterator position) {
 			erase(position->first);
 		};
@@ -225,24 +229,22 @@ namespace ft
 			{
 				if (tmp != _root)
 				{
-					if (value_comp()(tmp->data, tmp->parent->data))
+					if (value_comp()(*tmp->data, *tmp->parent->data))
 						tmp->parent->left = nullptr;
 					else
 						tmp->parent->right = nullptr;
+					_alloc.deallocate(tmp->data, 1);
 					delete tmp;
 				}
 				else
-				{
-					delete _root;
-					_root = new node();
-				}
+					_alloc.destroy(_root->data);
 			}
 			else if ((!tmp->left || tmp->left == _min) \
 			&& (tmp->right && tmp->right != _max))
 			{
 				if (tmp != _root)
 				{
-					if (value_comp()(tmp->data, tmp->parent->data))
+					if (value_comp()(*tmp->data, *tmp->parent->data))
 						tmp->parent->left = tmp->right;
 					else
 						tmp->parent->right = tmp->right;
@@ -253,6 +255,7 @@ namespace ft
 					tmp->right->parent = nullptr;
 					_root = tmp->right;
 				}
+				_alloc.deallocate(tmp->data, 1);
 				delete tmp;
 			}
 			else if ((tmp->left && tmp->left != _min) \
@@ -260,7 +263,7 @@ namespace ft
 			{
 				if (tmp != _root)
 				{
-					if (value_comp()(tmp->data, tmp->parent->data))
+					if (value_comp()(*tmp->data, *tmp->parent->data))
 						tmp->parent->left = tmp->left;
 					else
 						tmp->parent->right = tmp->left;
@@ -271,17 +274,20 @@ namespace ft
 					tmp->left->parent = nullptr;
 					_root = tmp->left;
 				}
+				_alloc.deallocate(tmp->data, 1);
 				delete tmp;
 			}
 			else if ((tmp->left && tmp->left != _min) \
 			&& (tmp->right && tmp->right != _max))
 			{
-				tmp->data = tmp->nxt()->data;
+				_alloc.destroy(tmp->data);
+				_alloc.construct(tmp->data, *tmp->nxt()->data);
 				tmp = tmp->nxt();
-				if (value_comp()(tmp->data, tmp->parent->data))
+				if (value_comp()(*tmp->data, *tmp->parent->data))
 					tmp->parent->left = nullptr;
 				else
 					tmp->parent->right = nullptr;
+				_alloc.deallocate(tmp->data, 1);
 				delete tmp;
 			}
 			_size--;
@@ -305,6 +311,8 @@ namespace ft
 		};
 		void		clear() {
 			iterator it = begin();
+			if (_size == 0)
+				return ;
 			while (_min->parent != _root)
 			{
 				if (_min->parent->right)
@@ -314,6 +322,8 @@ namespace ft
 				}
 				else
 					_min->parent->parent->left = nullptr;
+				_alloc.destroy(_min->parent->data);
+				_alloc.deallocate(_min->parent->data, 1);
 				delete _min->parent;
 				_set_min();
 			}
@@ -326,13 +336,14 @@ namespace ft
 				}
 				else
 					_max->parent->parent->right = nullptr;
+				_alloc.destroy(_max->parent->data);
+				_alloc.deallocate(_max->parent->data, 1);
 				delete _max->parent;
 				_set_max();
 			}
-			delete _min;
-			delete _max;
-			delete _root;
-			_init_map();
+			_alloc.destroy(_root->data);
+			_alloc.construct(_root->data, std::make_pair(key_type(), mapped_type()));
+			_size = 0;
 		};
 
 		/* Observers */
@@ -428,17 +439,24 @@ namespace ft
 		}
 
 		private:
-		key_compare	_comp;
-		size_type	_size;
-		node		*_root;
-		node		*_max;
-		node		*_min;
-		node		*_ptr;
+		key_compare		_comp;
+		size_type		_size;
+		node			*_root;
+		node			*_max;
+		node			*_min;
+		node			*_ptr;
+		allocator_type	_alloc;
 
 		void	_init_map() {
 			_root = new node();
 			_max = new node();
 			_min = new node();
+			_root->data = _alloc.allocate(1);
+			_alloc.construct(_root->data, std::make_pair(key_type(), mapped_type()));
+			_min->data = _alloc.allocate(1);
+			_alloc.construct(_min->data, std::make_pair(key_type(), mapped_type()));
+			_max->data = _alloc.allocate(1);
+			_alloc.construct(_max->data, std::make_pair(key_type(), mapped_type()));
 			_set_min();
 			_set_max();
 			_size = 0;
@@ -472,7 +490,7 @@ namespace ft
 			else if (x == _max)
 				std::cout << "MAX\n";
 			else
-				std::cout << x->data.first << "\n";
+				std::cout << x->data->first << "\n";
 			_printBT(x->left, n);
 		};
 	};

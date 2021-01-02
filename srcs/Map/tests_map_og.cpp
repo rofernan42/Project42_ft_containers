@@ -119,6 +119,7 @@ int main(void)
 	it = mp.begin();
 	it++;
 	it++;
+	std::cout << "it : " << it->first << std::endl;
 	mp.erase(it);
 	// mp.print();
 	print_cap(mp);

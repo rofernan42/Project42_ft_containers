@@ -37,7 +37,7 @@ namespace ft
 	template <class Pair, class Key>
 	struct nodeBT
 	{
-		Pair	data;
+		Pair	*data;
 		nodeBT	*parent;
 		nodeBT	*left;
 		nodeBT	*right;
@@ -49,9 +49,9 @@ namespace ft
 		};
 
 		nodeBT	*search(nodeBT *root, Key key) {
-			if (root == NULL || root->data.first == key)
+			if (root == NULL || root->data->first == key)
 				return (root);
-			if (root->data.first < key)
+			if (root->data->first < key)
 				return (search(root->right, key));
 			return (search(root->left, key));
 		};
@@ -127,13 +127,11 @@ namespace ft
 			&& _ptr->nxt() == x._ptr->nxt());
 		};
 		bool	operator!=(const iterator &x) const {
-			return (!(_ptr->data == x._ptr->data \
-			&& _ptr->pvs() == x._ptr->pvs() \
-			&& _ptr->nxt() == x._ptr->nxt()));
+			return (!(*this == x));
 		};
 
 		reference	operator*() const {
-			return (_ptr->data);
+			return (*_ptr->data);
 		};
 		pointer		operator->() const {
 			return (&(operator*()));
@@ -198,13 +196,11 @@ namespace ft
 			&& _ptr->nxt() == x._ptr->nxt());
 		};
 		bool	operator!=(const iterator &x) const {
-			return (!(_ptr->data == x._ptr->data \
-			&& _ptr->pvs() == x._ptr->pvs() \
-			&& _ptr->nxt() == x._ptr->nxt()));
+			return (!(*this == x));
 		};
 
 		reference	operator*() const {
-			return (_ptr->data);
+			return (*_ptr->data);
 		};
 		pointer		operator->() const {
 			return (&(operator*()));

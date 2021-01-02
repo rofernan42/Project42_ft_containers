@@ -14,7 +14,7 @@
 #include "Map.hpp"
 
 template <class S, class T>
-void	print_cap(ft::map<S, T> mp)
+void	print_cap(ft::map<S, T> &mp)
 {
 	std::cout << "mp.size():\t" << mp.size() << std::endl;
 	std::cout << "mp.max_size():\t" << mp.max_size() << std::endl;
@@ -49,12 +49,12 @@ int main(void)
 	ft::map<std::string, int> mp3;
 
 	std::cout << "********** MP EMPTY **********" << std::endl;
-	mp.print();
+	// mp.print();
 	print_cap(mp);
 	print_content_iterator(mp);
 
 	std::cout << "********** MP2 EMPTY **********" << std::endl;
-	mp.print();
+	// mp.print();
 	print_cap(mp);
 	print_content_iterator(mp);
 
@@ -73,7 +73,7 @@ int main(void)
 	std::cout << "mp[\"q\"]: " << mp["q"] << std::endl;
 	std::cout << "mp[\"o\"]: " << mp["o"] << std::endl;
 
-	mp.print();
+	// mp.print();
 	print_cap(mp);
 	print_content_iterator(mp);
 	print_reverse_iterator(mp);
@@ -82,19 +82,19 @@ int main(void)
 	ret = mp.insert(std::make_pair("i", 10));
 	std::cout << "return insert: " << ret.first->first << " -> " << ret.first->second << " - bool: " << ret.second << std::endl;
 	
-	mp.print();
+	// mp.print();
 	print_cap(mp);
 	print_content_iterator(mp);
 
 	std::cout << "********** OPERATOR = FROM EXISTING TO EMPTY ; MP2 = MP **********" << std::endl;
 	mp2 = mp;
-	mp2.print();
+	// mp2.print();
 	print_cap(mp2);
 	print_content_iterator(mp2);
 
 	std::cout << "********** OPERATOR = FROM EMPTY TO EXISTING ; MP2 = MP3 **********" << std::endl;
 	mp2 = mp3;
-	mp2.print();
+	// mp2.print();
 	print_cap(mp2);
 	print_content_iterator(mp2);
 	print_reverse_iterator(mp2);
@@ -103,7 +103,7 @@ int main(void)
 
 	std::cout << "********** ERASE MP BEGIN **********" << std::endl;
 	mp.erase(mp.begin());
-	mp.print();
+	// mp.print();
 	print_cap(mp);
 	print_content_iterator(mp);
 
@@ -111,7 +111,7 @@ int main(void)
 	ft::map<std::string, int>::iterator it = mp.end();
 	it--; // erase mp.end() is segfault
 	mp.erase(it);
-	mp.print();
+	// mp.print();
 	print_cap(mp);
 	print_content_iterator(mp);
 
@@ -119,31 +119,37 @@ int main(void)
 	it = mp.begin();
 	it++;
 	it++;
+	std::cout << "it : " << it->first << std::endl;
 	mp.erase(it);
-	mp.print();
+	// mp.print();
 	print_cap(mp);
 	print_content_iterator(mp);
 
 	std::cout << "********** ERASE MP ELEMENTS 1 BY 1 **********" << std::endl;
 	mp.erase("p");
+	// mp.print();
 	mp.erase("l");
+	// mp.print();
 	mp.erase("b");
+	// mp.print();
 	mp.erase("i");
+	// mp.print();
 	mp.erase("i");
+	// mp.print();
 	mp.erase("o");
-	mp.print();
+	// mp.print();
 	print_cap(mp);
 	print_content_iterator(mp);
 
 	std::cout << "********** INSERT MP FROM MP2 BEGIN TO END **********" << std::endl;
 	mp.insert(mp2.begin(), mp2.end());
-	mp.print();
+	// mp.print();
 	print_cap(mp);
 	print_content_iterator(mp);
 
 	std::cout << "********** MP CLEAR **********" << std::endl;
 	mp.clear();
-	mp.print();
+	// mp.print();
 	print_cap(mp);
 	print_content_iterator(mp);
 
@@ -158,11 +164,11 @@ int main(void)
 	mymap['r']=87;
 	mymap['u']=32;
 
-	mymap.print();
+	// mymap.print();
 	itlow=mymap.lower_bound ('b');
 	itup=mymap.upper_bound ('s');
 	mymap.erase(itlow,itup);
-	mymap.print();
+	// mymap.print();
 	print_cap(mymap);
 	print_content_iterator(mymap);
 
