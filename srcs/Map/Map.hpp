@@ -143,7 +143,6 @@ namespace ft
 		};
 		size_type	max_size() const {
 			return (std::numeric_limits<size_type>::max() / (sizeof(node) + sizeof(pointer)));
-			// return (std::numeric_limits<size_type>::max() / (sizeof(value_type)));
 		};
 
 		/* Element access */
@@ -286,7 +285,15 @@ namespace ft
 				if (value_comp()(*tmp->data, *tmp->parent->data))
 					tmp->parent->left = nullptr;
 				else
-					tmp->parent->right = nullptr;
+				{
+					if (tmp->right)
+					{
+						tmp->parent->right = tmp->right;
+						tmp->right->parent = tmp->parent;
+					}
+					else
+						tmp->parent->right = nullptr;
+				}
 				_alloc.deallocate(tmp->data, 1);
 				delete tmp;
 			}
@@ -551,8 +558,8 @@ namespace ft
 		return (!(lhs < rhs));
 	};
 	template <class Key, class T, class Compare, class Alloc>
-	void	swap(const map<Key, T, Compare, Alloc> &x, \
-    const map<Key, T, Compare, Alloc> &y) {
+	void	swap(map<Key, T, Compare, Alloc> &x, \
+    map<Key, T, Compare, Alloc> &y) {
 		x.swap(y);
 	};
 };

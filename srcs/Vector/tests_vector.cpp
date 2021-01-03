@@ -116,12 +116,12 @@ int main(void)
 	print_access(vec);
 
 	std::cout << "********** TEST INSERT 2 VEC **********\n";
-	vec.insert(vec.begin() + 3, 7, 5555);
+	vec.insert(vec.begin() + 3, (size_t)7, 5555);
 	print_cap(vec);
 	print_content(vec);
 	print_access(vec);
 
-	ft::vector<int>	vec3(4, 42);
+	ft::vector<int>	vec3((size_t)4, 42);
 	std::cout << "********** VEC3 **********\n";
 	print_cap(vec3);
 	print_content(vec3);
@@ -153,7 +153,7 @@ int main(void)
 	print_access(vec4);
 
 	std::cout << "********** VEC **********\n";
-	vec.assign(7, 100);
+	vec.assign((size_t)7, 100);
 	print_cap(vec);
 	print_content(vec);
 	print_content_iterator(vec);
@@ -181,7 +181,7 @@ int main(void)
 	print_content_iterator(vec5);
 
 	std::cout << "********** VEC6 **********\n";
-	ft::vector<int> vec6(9, 7777);
+	ft::vector<int> vec6((size_t)9, 7777);
 	print_cap(vec6);
 	print_content(vec6);
 	print_content_iterator(vec6);
@@ -224,8 +224,8 @@ int main(void)
 
 	std::cout << "\n\n\n******************** TESTS RELATIONAL OPERATORS ********************\n";
 
-	ft::vector<int> foo (3,100);
-	ft::vector<int> bar (2,200);
+	ft::vector<int> foo ((size_t)3,100);
+	ft::vector<int> bar ((size_t)2,200);
 
 	if (foo == bar) std::cout << "foo and bar are equal\n";
 	if (foo != bar) std::cout << "foo and bar are not equal\n";

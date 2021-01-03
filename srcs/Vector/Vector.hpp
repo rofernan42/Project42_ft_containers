@@ -39,20 +39,24 @@ namespace ft
 		typedef size_t size_type;
 
 		/* Member functions */
-		vector() {
+		vector(const allocator_type &alloc = allocator_type()) {
+			_alloc = alloc;
 			_vec = nullptr;
 			_size = 0;
 			_cap = 0;
 		};
-		vector(size_type n, const value_type &val = value_type()) {
+		vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()) {
+			_alloc = alloc;
 			_vec = nullptr;
 			_vec = _alloc.allocate(n);
 			_size = 0;
 			_cap = n;
 			assign(n, val);
 		};
-		vector(iterator first, iterator last) {
+		template <class InputIterator>
+		vector(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type()) {
 			difference_type n = last - first;
+			_alloc = alloc;
 			_vec = nullptr;
 			_vec = _alloc.allocate(n);
 			_size = 0;
@@ -60,6 +64,7 @@ namespace ft
 			assign(first, last);
 		};
 		vector(const vector &x) {
+			_alloc = x._alloc;
 			_vec = nullptr;
 			_size = 0;
 			_cap = 0;
@@ -73,9 +78,8 @@ namespace ft
 		vector	&operator=(const vector &x) {
 			if (this != &x)
 			{
+				_alloc = x._alloc;
 				_size = 0;
-				if (_cap < x._size)
-					_alloc.deallocate(_vec, _cap);
 				reserve(x._size);
 				assign(x.begin(), x.end());
 			}
@@ -131,15 +135,17 @@ namespace ft
 		bool		empty() const {
 			return (_size == 0);
 		};
-		void		reserve (size_type n) {
+		void		reserve(size_type n) {
 			value_type	*tmp;
+			if (n == 0)
+				return ;
 			if (n > max_size())
 				throw (std::length_error("new capacity (which is " + std::to_string(n) \
 				+ ") > max_size() (which is " + std::to_string(max_size()) + ")"));
 			if (n > _cap)
 			{
 				tmp = _alloc.allocate(n);
-				if (!empty())
+				if (_cap > 0)
 				{
 					for (size_t i = 0; i < _size; i++)
 						_alloc.construct(&tmp[i], _vec[i]);
@@ -157,7 +163,7 @@ namespace ft
 		const_reference	operator[](size_type n) const {
 			return (_vec[n]);
 		};
-		reference		at (size_type n) {
+		reference		at(size_type n) {
 			if (n >= _size)
 				throw (std::out_of_range("range_check: n (which is " + std::to_string(n) \
 				+ ") >= this->size() (which is " + std::to_string(_size) + ")"));
@@ -183,16 +189,8 @@ namespace ft
 		};
 
 		/* Modifiers */
-		void		assign(iterator first, iterator last) {
-			if (!empty())
-				clear();
-			while (first != last)
-			{
-				push_back(*first);
-				first++;
-			}
-		};
-		void		assign(const_iterator first, const_iterator last) {
+		template <class InputIterator>
+		void		assign(InputIterator first, InputIterator last) {
 			if (!empty())
 				clear();
 			while (first != last)
@@ -241,7 +239,8 @@ namespace ft
 			for (size_t i = 0; i < n; i++)
 				insert(begin() + pos, val);
 		};
-		void		insert(iterator position, iterator first, iterator last) {
+		template <class InputIterator>
+		void		insert(iterator position, InputIterator first, InputIterator last) {
 			difference_type range = last - first;
 			difference_type pos = position - begin();
 
@@ -336,7 +335,7 @@ namespace ft
 		return (!(lhs < rhs));
 	};
 	template <class T, class Alloc>
-	void	swap (vector<T, Alloc> &x, vector<T, Alloc> &y) {
+	void	swap(vector<T, Alloc> &x, vector<T, Alloc> &y) {
 		x.swap(y);
 	};
 };

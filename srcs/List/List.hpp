@@ -38,18 +38,23 @@ namespace ft
 		typedef size_t size_type;
 
 		/* Member functions */
-		list() {
+		list(const allocator_type &alloc = allocator_type()) {
+			_alloc = alloc;
 			_init_list();
 		};
-		list(size_type n, const value_type &val = value_type()) {
+		list(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()) {
+			_alloc = alloc;
 			_init_list();
 			assign(n, val);
 		};
-		list(iterator first, iterator last) {
+		template <class InputIterator>
+		list(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type()) {
+			_alloc = alloc;
 			_init_list();
 			assign(first, last);
 		};
 		list(const list &x) {
+			_alloc = x._alloc;
 			_init_list();
 			assign(x.begin(), x.end());
 		};
@@ -62,7 +67,10 @@ namespace ft
 		};
 		list	&operator=(const list &x) {
 			if (this != &x)
+			{
+				_alloc = x._alloc;
 				assign(x.begin(), x.end());
+			}
 			return (*this);
 		};
 
@@ -120,16 +128,8 @@ namespace ft
 		};
 
 		/* Modifiers */
-  		void		assign(iterator first, iterator last) {
-			if (!empty())
-				clear();
-			while (first != last)
-			{
-				push_back(*first);
-				first++;
-			}
-		};
-		void		assign(const_iterator first, const_iterator last) {
+  		template <class InputIterator>
+		  void		assign(InputIterator first, InputIterator last) {
 			if (!empty())
 				clear();
 			while (first != last)
@@ -250,7 +250,8 @@ namespace ft
 			for (size_t i = 0; i < n; i++)
 				insert(position, val);
 		};
-		void		insert(iterator position, iterator first, iterator last) {
+		template <class InputIterator>
+		void		insert(iterator position, InputIterator first, InputIterator last) {
 			while (first != last)
 			{
 				insert(position, *first);
@@ -304,14 +305,14 @@ namespace ft
 		void		resize(size_type n, value_type val = value_type()) {
 			if (n < _size)
 			{
-				iterator it = begin();
-				for (size_t i = 0; i < n; i++)
-					it++;
-				erase(it, end());
+				for (size_t i = _size; i > n; i--)
+					pop_back();
 			}
 			else if (n > _size)
+			{
 				for (size_t i = _size; i < n; i++)
 					push_back(val);
+			}
 		};
 		void		clear() {
 			erase(begin(), end());
@@ -357,7 +358,12 @@ namespace ft
 			while (it != end() && tmp != end())
 			{
 				if (*tmp == *it)
-					tmp = erase(tmp);
+				{
+					erase(tmp);
+					it = begin();
+					tmp = begin();
+					tmp++;
+				}
 				else
 				{
 					tmp++;
@@ -373,7 +379,12 @@ namespace ft
 			while (it != end() && tmp != end())
 			{
 				if (binary_pred(*tmp, *it))
-					tmp = erase(tmp);
+				{
+					erase(tmp);
+					it = begin();
+					tmp = begin();
+					tmp++;
+				}
 				else
 				{
 					tmp++;
@@ -382,13 +393,22 @@ namespace ft
 			}
 		};
 		void	merge(list &x) {
-			if (this == &x)
+			if (this == &x || x.empty())
 				return ;
 			int n = 0;
 			if (_is_sorted() && x._is_sorted())
 				n = 1;
-			_end->next = x._start;
-			x._start->prev = _end;
+			if (!empty())
+			{
+				_end->next = x._start;
+				x._start->prev = _end;
+			}
+			else
+			{
+				_head->next = x._start;
+				x._start->prev = _head;
+				_start = x._start;
+			}
 			x._end->next = _tail;
 			_tail->prev = x._end;
 			_end = x._end;
@@ -406,8 +426,17 @@ namespace ft
 			int n = 0;
 			if (_is_sorted(comp) && x._is_sorted(comp))
 				n = 1;
-			_end->next = x._start;
-			x._start->prev = _end;
+			if (!empty())
+			{
+				_end->next = x._start;
+				x._start->prev = _end;
+			}
+			else
+			{
+				_head->next = x._start;
+				x._start->prev = _head;
+				_start = x._start;
+			}
 			x._end->next = _tail;
 			_tail->prev = x._end;
 			_end = x._end;
@@ -419,9 +448,11 @@ namespace ft
 				sort(comp);
 		};
 		void	sort() {
+			if (_size == 0 || _size == 1)
+				return ;
 			value_type tmp;
 			_ptr = _start;
-			for (size_t i = 0; i < _size; i++)
+			while (_ptr != _end)
 			{
 				_ptr = _ptr->next;
 				if (*_ptr->prev->data > *_ptr->data)
@@ -431,16 +462,17 @@ namespace ft
 					_alloc.construct(_ptr->data, *_ptr->prev->data);
 					_alloc.destroy(_ptr->prev->data);
 					_alloc.construct(_ptr->prev->data, tmp);
-					i = 0;
 					_ptr = _start;
 				}
 			}
 		};
 		template <class Compare>
 		void	sort(Compare comp) {
+			if (_size == 0 || _size == 1)
+				return ;
 			value_type tmp;
 			_ptr = _start;
-			for (size_t i = 0; i < _size; i++)
+			while (_ptr != _end)
 			{
 				_ptr = _ptr->next;
 				if (comp(*_ptr->data, *_ptr->prev->data))
@@ -450,12 +482,13 @@ namespace ft
 					_alloc.construct(_ptr->data, *_ptr->prev->data);
 					_alloc.destroy(_ptr->prev->data);
 					_alloc.construct(_ptr->prev->data, tmp);
-					i = 0;
 					_ptr = _start;
 				}
 			}
 		};
 		void	reverse() {
+			if (empty())
+				return ;
 			iterator it = begin();
 			for (size_t i = 0; i < _size - 1; i++)
 				splice(it, *this, iterator(_end));
@@ -484,6 +517,8 @@ namespace ft
 			_size = 0;
 		};
 		bool	_is_sorted() {
+			if (empty())
+				return (true);
 			iterator it = begin();
 			iterator it2 = begin();
 			it2++;
@@ -498,6 +533,8 @@ namespace ft
 		};
 		template <class Compare>
 		bool	_is_sorted(Compare comp) {
+			if (empty())
+				return (true);
 			iterator it = begin();
 			iterator it2 = begin();
 			it2++;
@@ -562,7 +599,7 @@ namespace ft
 		return (!(lhs < rhs));
 	};
 	template <class T, class Alloc>
-	void	swap (const list<T, Alloc> &x, const list<T, Alloc> &y) {
+	void	swap (list<T, Alloc> &x, list<T, Alloc> &y) {
 		x.swap(y);
 	};
 };
