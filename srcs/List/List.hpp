@@ -55,6 +55,8 @@ namespace ft
 		};
 		~list() {
 			clear();
+			_alloc.deallocate(_head->data, 1);
+			_alloc.deallocate(_tail->data, 1);
 			delete _head;
 			delete _tail;
 		};
@@ -105,16 +107,16 @@ namespace ft
 
 		/* Element access */
 		reference		front() {
-			return (_start->data);
+			return (*_start->data);
 		};
 		const_reference	front() const {
-			return (_start->data);
+			return (*_start->data);
 		};
 		reference		back() {
-			return (_end->data);
+			return (*_end->data);
 		};
 		const_reference	back() const {
-			return (_end->data);
+			return (*_end->data);
 		};
 
 		/* Modifiers */
@@ -146,7 +148,8 @@ namespace ft
 			if (empty())
 			{
 				_ptr = new Elem<value_type>;
-				_ptr->data = val;
+				_ptr->data = _alloc.allocate(1);
+				_alloc.construct(_ptr->data, val);
 				_ptr->next = _tail;
 				_start = _ptr;
 				_end = _ptr;
@@ -155,7 +158,8 @@ namespace ft
 			else
 			{
 				_ptr = new Elem<value_type>;
-				_ptr->data = val;
+				_ptr->data = _alloc.allocate(1);
+				_alloc.construct(_ptr->data, val);
 				_ptr->next = _start;
 				_start->prev = _ptr;
 				_start = _ptr;
@@ -172,6 +176,7 @@ namespace ft
 			_start->next->prev = _head;
 			_head->next = _start->next;
 			_start = _start->next;
+			_alloc.deallocate(tmp->data, 1);
 			delete tmp;
 			_size--;
 		};
@@ -179,7 +184,8 @@ namespace ft
 			if (empty())
 			{
 				_ptr = new Elem<value_type>;
-				_ptr->data = val;
+				_ptr->data = _alloc.allocate(1);
+				_alloc.construct(_ptr->data, val);
 				_ptr->prev = _head;
 				_start = _ptr;
 				_end = _ptr;
@@ -188,7 +194,8 @@ namespace ft
 			else
 			{
 				_ptr = new Elem<value_type>;
-				_ptr->data = val;
+				_ptr->data = _alloc.allocate(1);
+				_alloc.construct(_ptr->data, val);
 				_ptr->prev = _end;
 				_end->next = _ptr;
 				_end = _ptr;
@@ -210,6 +217,7 @@ namespace ft
 			_end->prev->next = _tail;
 			_tail->prev = _end->prev;
 			_end = _end->prev;
+			_alloc.deallocate(tmp->data, 1);
 			delete tmp;
 			_size--;
 		};
@@ -227,7 +235,8 @@ namespace ft
 				it++;
 				_ptr = _ptr->next;
 			}
-			tmp->data = val;
+			tmp->data = _alloc.allocate(1);
+			_alloc.construct(tmp->data, val);
 			tmp->prev = _ptr->prev;
 			tmp->next = _ptr;
 			tmp->prev->next = tmp;
@@ -272,6 +281,7 @@ namespace ft
 			tmp->prev->next = tmp->next;
 			tmp->next->prev = tmp->prev;
 			_ptr = tmp->next;
+			_alloc.deallocate(tmp->data, 1);
 			delete tmp;
 			_size--;
 			return (iterator(_ptr));
@@ -414,11 +424,13 @@ namespace ft
 			for (size_t i = 0; i < _size; i++)
 			{
 				_ptr = _ptr->next;
-				if (_ptr->prev->data > _ptr->data)
+				if (*_ptr->prev->data > *_ptr->data)
 				{
-					tmp = _ptr->data;
-					_ptr->data = _ptr->prev->data;
-					_ptr->prev->data = tmp;
+					tmp = *_ptr->data;
+					_alloc.destroy(_ptr->data);
+					_alloc.construct(_ptr->data, *_ptr->prev->data);
+					_alloc.destroy(_ptr->prev->data);
+					_alloc.construct(_ptr->prev->data, tmp);
 					i = 0;
 					_ptr = _start;
 				}
@@ -431,11 +443,13 @@ namespace ft
 			for (size_t i = 0; i < _size; i++)
 			{
 				_ptr = _ptr->next;
-				if (comp(_ptr->data, _ptr->prev->data))
+				if (comp(*_ptr->data, *_ptr->prev->data))
 				{
-					tmp = _ptr->data;
-					_ptr->data = _ptr->prev->data;
-					_ptr->prev->data = tmp;
+					tmp = *_ptr->data;
+					_alloc.destroy(_ptr->data);
+					_alloc.construct(_ptr->data, *_ptr->prev->data);
+					_alloc.destroy(_ptr->prev->data);
+					_alloc.construct(_ptr->prev->data, tmp);
 					i = 0;
 					_ptr = _start;
 				}
@@ -458,10 +472,12 @@ namespace ft
 
 		void	_init_list() {
 			_head = new Elem<value_type>;
-			_head->data = value_type();
+			_head->data = _alloc.allocate(1);
+			_alloc.construct(_head->data, value_type());
 			_head->prev = NULL;
 			_tail = new Elem<value_type>;
-			_tail->data = value_type();
+			_tail->data = _alloc.allocate(1);
+			_alloc.construct(_tail->data, value_type());
 			_tail->next = NULL;
 			_start = _tail;
 			_end = _head;

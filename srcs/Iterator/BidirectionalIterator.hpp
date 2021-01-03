@@ -23,7 +23,7 @@ namespace ft
 	struct Elem
 	{
 		Elem	*prev;
-		T		data;
+		T		*data;
 		Elem	*next;
 
 		Elem	*nxt() {

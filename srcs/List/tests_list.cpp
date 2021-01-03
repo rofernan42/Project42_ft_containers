@@ -32,7 +32,7 @@ bool	operator() (const int& value) {
 };
 
 template <class T>
-void	print_cap(ft::list<T> lst)
+void	print_cap(ft::list<T> &lst)
 {
 	std::cout << "vec.size():\t" << lst.size() << std::endl;
 	std::cout << "vec.max_size():\t" << lst.max_size() << std::endl;
