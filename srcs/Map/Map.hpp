@@ -142,7 +142,7 @@ namespace ft
 			return (_size);
 		};
 		size_type	max_size() const {
-			return (std::numeric_limits<size_type>::max() / (sizeof(node) + sizeof(pointer)));
+			return (std::numeric_limits<size_type>::max() / ((sizeof(node) + sizeof(value_type))));
 		};
 
 		/* Element access */
